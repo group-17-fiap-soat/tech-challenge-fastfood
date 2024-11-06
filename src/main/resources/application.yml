@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: fastfood
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fastfood
+    username: fastfooduser
+    password: fastfoodpass
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
