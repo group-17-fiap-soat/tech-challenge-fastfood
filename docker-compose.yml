@@ -1,15 +1,13 @@
-version: '3.9'
-
 services:
   postgres:
     image: postgres:14
     container_name: fastfood-postgres
     environment:
       POSTGRES_DB: fastfood
-      POSTGRES_USER: fastfooduser
-      POSTGRES_PASSWORD: fastfoodpass
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
