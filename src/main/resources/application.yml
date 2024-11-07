@@ -2,9 +2,9 @@ spring:
   application:
     name: fastfood
   datasource:
-    url: jdbc:postgresql://localhost:5432/fastfood
-    username: fastfooduser
-    password: fastfoodpass
+    url: jdbc:postgresql://localhost:${DATABASE_PORT}/${DATABASE}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -14,3 +14,4 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
