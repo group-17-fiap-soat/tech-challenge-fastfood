@@ -16,6 +16,11 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+  flyway:
+    enabled: true
+    locations: classpath:db/DDL,classpath:db/DML
+    baseline-on-migrate: true
+
 springdoc:
   swagger-ui:
     path: /swagger-ui
