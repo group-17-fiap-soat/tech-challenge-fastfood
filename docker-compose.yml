@@ -10,6 +10,12 @@ services:
       - '${DATABASE_PORT}:${DATABASE_PORT}'
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - fastfood-network
 
 volumes:
   postgres_data:
+
+networks:
+  fastfood-network:
+    external: true
