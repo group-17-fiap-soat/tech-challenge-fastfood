@@ -1,12 +1,16 @@
 # 🍔 Tech Challenge - FastFood Backend API 🍟
 
-Welcome to the **FastFood Backend Service**! This Kotlin-powered backend is designed to handle all the core functionalities of a FastFood management system. Hungry for some clean code and efficient API magic? Let’s get cooking! 🧑‍💻🔥
+Welcome to the **FastFood Backend Service**! This Kotlin-powered backend is designed to handle all the core
+functionalities of a FastFood management system. Hungry for some clean code and efficient API magic? Let’s get cooking!
+🧑‍💻🔥
 
 ---
 
 ## 🛠️ Quick Start Guide
 
-This project is fueled by **Docker Compose** to quickly set up your PostgreSQL database environment. Below is a breakdown of the environment variables you’ll need to configure for database connectivity. To get started, create a `.env` file by copying the structure provided in `.env.sample`.
+This project is fueled by **Docker Compose** to quickly set up your PostgreSQL database environment. Below is a
+breakdown of the environment variables you’ll need to configure for database connectivity. To get started, create
+a `.env` file by copying the structure provided in `.env.sample`.
 
 | Variable            | Description                                                    |
 |---------------------|----------------------------------------------------------------|
@@ -21,7 +25,7 @@ This project is fueled by **Docker Compose** to quickly set up your PostgreSQL d
 
 1. **Create Your Environment File**
 
-    Duplicate the `.env.sample` file to create your personalized `.env` file:
+   Duplicate the `.env.sample` file to create your personalized `.env` file:
 
     ```bash
     cp .env.sample .env
@@ -29,7 +33,7 @@ This project is fueled by **Docker Compose** to quickly set up your PostgreSQL d
 
 2. **Update Your Variables**
 
-    Open up `.env` and customize it to your taste (or stick with the sample values!):
+   Open up `.env` and customize it to your taste (or stick with the sample values!):
 
     ```plaintext
     DATABASE=db_example
@@ -40,7 +44,7 @@ This project is fueled by **Docker Compose** to quickly set up your PostgreSQL d
 
 3. **Start the Database with Docker Compose**
 
-    Let Docker Compose do the heavy lifting. Fire up PostgreSQL with:
+   Let Docker Compose do the heavy lifting. Fire up PostgreSQL with:
 
     ```bash
     docker-compose up -d
@@ -48,7 +52,7 @@ This project is fueled by **Docker Compose** to quickly set up your PostgreSQL d
 
 4. **Build the Application Docker Image**
 
-    To build the application Docker image, run the following command:
+   To build the application Docker image, run the following command:
 
     ```bash
     docker build -t fastfood-app .
@@ -56,7 +60,7 @@ This project is fueled by **Docker Compose** to quickly set up your PostgreSQL d
 
 5. **Run the Application Docker Container**
 
-    Once the image is built, run the Spring Boot application in a container:
+   Once the image is built, run the Spring Boot application in a container:
 
     ```bash
     docker run -p 8080:8080 fastfood-app
@@ -64,19 +68,38 @@ This project is fueled by **Docker Compose** to quickly set up your PostgreSQL d
 
 6. **Check Your Connection**
 
-    PostgreSQL should now be serving up data at `localhost:${DATABASE_PORT}`. Use the credentials in your `.env` to connect. The FastFood application will be accessible at `http://localhost:8080`.
+   PostgreSQL should now be serving up data at `localhost:${DATABASE_PORT}`. Use the credentials in your `.env` to
+   connect. The FastFood application will be accessible at `http://localhost:8080`.
 
 ---
 
 ## 🔗 Spring Boot Integration
 
-The Spring Boot service will automatically pull in these environment variables to handle the database connection for you. Just make sure that `.env` is in place and configured correctly, then let Spring Boot take care of the rest!
+The Spring Boot service will automatically pull in these environment variables to handle the database connection for
+you. Just make sure that `.env` is in place and configured correctly, then let Spring Boot take care of the rest!
 
 ---
 
+## 🧑‍💻 Swagger Documentation
+
+Your FastFood API is documented with **Swagger UI**, providing a clean and interactive interface for exploring all
+available endpoints.
+
+To access the Swagger UI:
+
+1. **Launch the Application** by running it through Docker as described above.
+2. **Open Swagger UI** in your browser at:
+
+   ```plaintext
+   http://localhost:8080/swagger-ui
+    ```
+
 ## 💡 Pro Tips & Troubleshooting
 
-- **Database Not Connecting?** Double-check that Docker Compose is up and running, and make sure PostgreSQL isn’t already running on the same port outside of Docker.
-- **Environment Variables Not Loading?** Ensure your IDE or terminal session recognizes the `.env` file. If not, restart or source the `.env` file manually.
-  
-With that, you’re all set to start coding, deploying, and managing data like a pro. Welcome to FastFood, where speed meets deliciously clean code. 🍕🍟
+- **Database Not Connecting?** Double-check that Docker Compose is up and running, and make sure PostgreSQL isn’t
+  already running on the same port outside of Docker.
+- **Environment Variables Not Loading?** Ensure your IDE or terminal session recognizes the `.env` file. If not, restart
+  or source the `.env` file manually.
+
+With that, you’re all set to start coding, deploying, and managing data like a pro. Welcome to FastFood, where speed
+meets deliciously clean code. 🍕🍟

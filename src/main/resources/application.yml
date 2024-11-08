@@ -16,3 +16,12 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+    operationsSorter: method
+  api-docs:
+    path: /v3/api-docs
+  version: "1.0.1"
+application-description: "FastFood é uma aplicação de gerenciamento de pedidos online para fast food, focada em rapidez e eficiência."
+application-version: "1.0.1"
