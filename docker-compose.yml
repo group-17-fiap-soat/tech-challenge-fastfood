@@ -3,11 +3,11 @@ services:
     image: postgres:14
     container_name: fastfood-postgres
     environment:
-      POSTGRES_DB: fastfood
+      POSTGRES_DB: ${DATABASE}
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     ports:
-      - '5432:5432'
+      - '${DATABASE_PORT}:${DATABASE_PORT}'
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
