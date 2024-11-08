@@ -71,7 +71,7 @@ a `.env` file by copying the structure provided in `.env.sample`.
    Once the image is built, run the Spring Boot application in a container:
 
     ```bash
-    docker run --env-file .env --network fastfood-network fastfood-app
+    docker run -p 8080:8080 --env-file .env --network fastfood-network fastfood-app
     ```
 
 7. **Check Your Connection**
