@@ -2,7 +2,7 @@ spring:
   application:
     name: fastfood
   datasource:
-    url: jdbc:postgresql://localhost:${DATABASE_PORT}/${DATABASE}
+    url: jdbc:postgresql://postgres:${DATABASE_PORT}/${DATABASE}
     username: ${DATABASE_USER}
     password: ${DATABASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
@@ -14,4 +14,19 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
+  flyway:
+    enabled: true
+    locations: classpath:db/DDL,classpath:db/DML
+    baseline-on-migrate: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+    operationsSorter: method
+  api-docs:
+    path: /v3/api-docs
+    version: openapi_3_1
+application-description: "FastFood é uma aplicação de gerenciamento de pedidos online para fast food, focada em rapidez e eficiência."
+application-version: "1.0.1"
