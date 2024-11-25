@@ -63,3 +63,10 @@ CREATE TABLE Payment
     created_at     TIMESTAMPTZ      DEFAULT now(),
     updated_at     TIMESTAMPTZ      DEFAULT now()
 );
+
+
+-- Tabela Example TODO apagar, apenas para fins de demonstração
+CREATE TABLE Example
+(
+    id             NUMERIC PRIMARY KEY DEFAULT nextval('sq_order_number')
+);
