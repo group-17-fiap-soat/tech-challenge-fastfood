@@ -9,9 +9,9 @@ import tech.challenge.fastfood.fastfood.infra.mapper.ExampleMapper
 @Service
 class ExampleServiceImpl(
     val exampleRepositoryPort: ExampleRepositoryPort
-): ExampleService {
+) : ExampleService {
     override fun createExample(exampleDto: ExampleDto): ExampleDto {
-        val savedEntity =  exampleRepositoryPort.save(ExampleMapper.toEntity(exampleDto));
+        val savedEntity = exampleRepositoryPort.save(ExampleMapper.toEntity(exampleDto));
         return ExampleMapper.toDto(savedEntity);
     }
     //TODO lógica aqui :)

@@ -1,5 +1,5 @@
 CREATE
-EXTENSION IF NOT EXISTS "uuid-ossp";
+    EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Tabela Customer
 CREATE TABLE Customer
@@ -31,14 +31,14 @@ CREATE SEQUENCE sq_order_number;
 -- Tabela Order
 CREATE TABLE "order"
 (
-    id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    number          INT4 NOT NULL    DEFAULT nextval('sq_order_number'),
-    customer_id     UUID REFERENCES Customer (id),
-    status          TEXT NOT NULL,
-    order_date      TIMESTAMPTZ      DEFAULT now(),
-    finished_date   TIMESTAMPTZ,
-    created_at      TIMESTAMPTZ      DEFAULT now(),
-    updated_at      TIMESTAMPTZ      DEFAULT now()
+    id            UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    number        INT4 NOT NULL    DEFAULT nextval('sq_order_number'),
+    customer_id   UUID REFERENCES Customer (id),
+    status        TEXT NOT NULL,
+    order_date    TIMESTAMPTZ      DEFAULT now(),
+    finished_date TIMESTAMPTZ,
+    created_at    TIMESTAMPTZ      DEFAULT now(),
+    updated_at    TIMESTAMPTZ      DEFAULT now()
 );
 
 -- Tabela OrderItem
@@ -64,9 +64,8 @@ CREATE TABLE Payment
     updated_at     TIMESTAMPTZ      DEFAULT now()
 );
 
-
 -- Tabela Example TODO apagar, apenas para fins de demonstração
 CREATE TABLE Example
 (
-    id             NUMERIC PRIMARY KEY DEFAULT nextval('sq_order_number')
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4()
 );
