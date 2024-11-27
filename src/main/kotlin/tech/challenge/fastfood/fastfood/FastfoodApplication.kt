@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @SpringBootApplication
 @EnableJpaAuditing
-@EntityScan(basePackages = ["tech.challenge.fastfood.fastfood.domain.model"])  // Pacote onde as entidades estão localizadas
-@EnableJpaRepositories(basePackages = ["tech.challenge.fastfood.fastfood.infra.adapters.repositories"])  // Pacote onde os repositórios estão
+@EntityScan
+@EnableJpaRepositories
 
 class FastfoodApplication
 
