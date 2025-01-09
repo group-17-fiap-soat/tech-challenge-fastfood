@@ -14,7 +14,6 @@ class CustomerAdapter(
 ) : CustomerRepositoryPort {
     override fun save(entity: CustomerDto): CustomerEntity {
         val customerEntity = CustomerMapper.toEntity(entity)
-
         return customerJPAInterface.save(customerEntity)
     }
 
