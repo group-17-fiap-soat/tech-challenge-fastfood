@@ -10,7 +10,7 @@ import java.util.*
 @Service
 class OrderServiceImpl(
     private val orderRepositoryPort: OrderRepositoryPort
-): OrderService {
+) : OrderService {
 
     override fun listOrders(): List<OrderDto>? {
         return orderRepositoryPort.findAll().map(OrderMapper::toDto)
