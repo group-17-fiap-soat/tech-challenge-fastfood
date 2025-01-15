@@ -6,7 +6,7 @@ import org.springframework.data.annotation.LastModifiedDate
 import java.time.OffsetDateTime
 import java.util.UUID
 
-@Entity(name = "customer")
+@Entity(name = "tb_customer")
 data class CustomerEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
