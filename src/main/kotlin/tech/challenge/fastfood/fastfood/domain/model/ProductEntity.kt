@@ -1,6 +1,8 @@
 package tech.challenge.fastfood.fastfood.domain.model
 
 import jakarta.persistence.*
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedDate
 import java.math.BigDecimal
 import java.time.OffsetDateTime
 import java.util.*
@@ -26,9 +28,11 @@ data class ProductEntity(
 
     var imageUrl: String? = null,
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    var createdAt: OffsetDateTime = OffsetDateTime.now(),
+    @CreatedDate
+    @Column(name = "created_at", nullable = false,updatable = false)
+    var createdAt: OffsetDateTime? = OffsetDateTime.now(),
 
-    @Column(name = "updated_at", nullable = false)
-    var updatedAt: OffsetDateTime = OffsetDateTime.now()
+    @LastModifiedDate
+    @Column(name = "updated_at", nullable = false,updatable = false)
+    var updatedAt: OffsetDateTime? = OffsetDateTime.now()
 )

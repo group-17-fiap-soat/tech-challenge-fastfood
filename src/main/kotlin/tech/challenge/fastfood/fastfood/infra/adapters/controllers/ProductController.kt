@@ -25,7 +25,6 @@ class ProductController(
         val product = ProductMapper.createProductRequestToDto(request)
         val response = productService.createProduct(product).let(ProductMapper::toProductResponseV1)
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
-
     }
 
     @PutMapping

@@ -25,8 +25,8 @@ object ProductMapper {
         price = dto.price,
         category = dto.category,
         imageUrl = dto.imageUrl,
-        createdAt = dto.createdAt!!,
-        updatedAt = dto.updatedAt!!
+        createdAt = dto.createdAt,
+        updatedAt = dto.updatedAt
     )
 
     fun createProductRequestToDto(requestV1: CreateProductRequestV1) = ProductDto(
