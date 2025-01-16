@@ -1,6 +1,11 @@
 CREATE
 EXTENSION IF NOT EXISTS "uuid-ossp";
 
+
+-- Sequence para o campo number da tabela Order
+CREATE SEQUENCE sq_order_number START WITH 1 INCREMENT BY 1;
+
+
 -- Tabela Customer
 CREATE TABLE tb_customer
 (
@@ -16,7 +21,7 @@ CREATE TABLE tb_customer
 CREATE TABLE tb_product
 (
     id          UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    name        TEXT    NOT NULL,
+    name        TEXT   NOT NULL,
     description TEXT,
     price       NUMERIC NOT NULL,
     category    TEXT    NOT NULL,
@@ -24,9 +29,6 @@ CREATE TABLE tb_product
     created_at  TIMESTAMPTZ      DEFAULT now(),
     updated_at  TIMESTAMPTZ      DEFAULT now()
 );
-
--- Sequence para o campo number da tabela Order
-CREATE SEQUENCE sq_order_number START WITH 1 INCREMENT BY 1;
 
 -- Tabela Order
 CREATE TABLE tb_order
@@ -64,11 +66,8 @@ CREATE TABLE tb_payment
     updated_at     TIMESTAMPTZ      DEFAULT now()
 );
 
--- Tabela Example TODO apagar, apenas para fins de demonstração
-CREATE TABLE tb_example
-(
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4()
-);
+
+
 
 
 CREATE OR REPLACE FUNCTION set_order_number()

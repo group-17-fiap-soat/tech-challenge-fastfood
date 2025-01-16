@@ -2,6 +2,7 @@ package tech.challenge.fastfood.fastfood.domain.model
 
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.Generated
 import org.hibernate.annotations.UpdateTimestamp
 import java.time.OffsetDateTime
 import java.util.*
@@ -13,6 +14,7 @@ data class OrderEntity(
     val id: UUID? = null,
 
     @Column(name = "number", insertable = false, updatable = false, unique = true, nullable = false)
+    @Generated
     var orderNumber: Long? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
