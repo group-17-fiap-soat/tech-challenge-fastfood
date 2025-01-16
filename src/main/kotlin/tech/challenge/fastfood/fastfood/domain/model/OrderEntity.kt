@@ -1,20 +1,21 @@
 package tech.challenge.fastfood.fastfood.domain.model
 
 import jakarta.persistence.*
-import org.springframework.data.annotation.CreatedDate
-import org.springframework.data.annotation.LastModifiedDate
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.Generated
+import org.hibernate.annotations.UpdateTimestamp
 import java.time.OffsetDateTime
 import java.util.*
 
-@Entity(name = "order")
-@Table(name = "tb_order")
+@Entity(name = "tb_order")
 data class OrderEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     val id: UUID? = null,
 
-    @Column(name = "number")
-    val orderNumber: Long,
+    @Column(name = "number", insertable = false, updatable = false, unique = true, nullable = false)
+    @Generated
+    var orderNumber: Long? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
@@ -22,19 +23,20 @@ data class OrderEntity(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    val status: StatusOrderEntity = StatusOrderEntity.RECEIVED,
+    val status: StatusOrderEntity? = null,
 
+    @CreationTimestamp
     @Column(name = "order_date")
     val orderDate: OffsetDateTime? = null,
 
     @Column(name = "finished_date")
     val finishedDate: OffsetDateTime? = null,
 
-    @CreatedDate
+    @CreationTimestamp
     @Column(name = "created_at")
     var createdAt: OffsetDateTime? = null,
 
-    @LastModifiedDate
+    @UpdateTimestamp
     @Column(name = "updated_at")
     var updatedAt: OffsetDateTime? = null
 )

@@ -31,6 +31,7 @@ object CustomerMapper {
     )
 
     fun toCustomerResponseV1(dto: CustomerDto?) = CustomerResponseV1(
+        id = dto?.id,
         cpf = dto?.cpf,
         name = dto?.name,
         email = dto?.email

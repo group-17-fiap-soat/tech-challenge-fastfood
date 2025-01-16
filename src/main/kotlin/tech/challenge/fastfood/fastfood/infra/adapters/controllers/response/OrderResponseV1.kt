@@ -4,7 +4,7 @@ import tech.challenge.fastfood.fastfood.domain.model.StatusOrderEntity
 import java.util.UUID
 
 data class OrderResponseV1(
-    val orderNumber: Long,
-    val customer: CustomerResponseV1,
-    val status: StatusOrderEntity
+    val orderNumber: Long? = null,
+    val idCustomer: UUID? = null,
+    val status: StatusOrderEntity? = null,
 )

@@ -1,5 +1,10 @@
 CREATE
-    EXTENSION IF NOT EXISTS "uuid-ossp";
+EXTENSION IF NOT EXISTS "uuid-ossp";
+
+
+-- Sequence para o campo number da tabela Order
+CREATE SEQUENCE sq_order_number START WITH 1 INCREMENT BY 1;
+
 
 -- Tabela Customer
 CREATE TABLE tb_customer
@@ -16,7 +21,7 @@ CREATE TABLE tb_customer
 CREATE TABLE tb_product
 (
     id          UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    name        TEXT    NOT NULL,
+    name        TEXT   NOT NULL,
     description TEXT,
     price       NUMERIC NOT NULL,
     category    TEXT    NOT NULL,
@@ -25,16 +30,13 @@ CREATE TABLE tb_product
     updated_at  TIMESTAMPTZ      DEFAULT now()
 );
 
--- Sequence para o campo number da tabela Order
-CREATE SEQUENCE sq_order_number;
-
 -- Tabela Order
 CREATE TABLE tb_order
 (
     id            UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    number        BIGINT  NOT NULL DEFAULT nextval('sq_order_number'),
+    number        BIGINT NOT NULL,
     customer_id   UUID REFERENCES tb_customer (id),
-    status        TEXT NOT NULL,
+    status        TEXT   NOT NULL,
     order_date    TIMESTAMPTZ      DEFAULT now(),
     finished_date TIMESTAMPTZ,
     created_at    TIMESTAMPTZ      DEFAULT now(),
@@ -64,8 +66,23 @@ CREATE TABLE tb_payment
     updated_at     TIMESTAMPTZ      DEFAULT now()
 );
 
--- Tabela Example TODO apagar, apenas para fins de demonstração
-CREATE TABLE tb_example
-(
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4()
-);
+
+
+
+
+CREATE OR REPLACE FUNCTION set_order_number()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.number
+:= nextval('sq_order_number');
+RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Add the trigger to the table
+CREATE TRIGGER order_number_trigger
+    BEFORE INSERT
+    ON tb_order
+    FOR EACH ROW
+    EXECUTE FUNCTION set_order_number();
