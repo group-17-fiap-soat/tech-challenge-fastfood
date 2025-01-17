@@ -24,6 +24,10 @@ class ProductAdapter(
         return productJPAInterface.findById(id).orElse(null)
     }
 
+    override fun findByOrderItemId(id: UUID): ProductEntity? {
+        return productJPAInterface.findByOrderItemId(id).orElse(null)
+    }
+
     override fun delete(id: UUID) {
        return productJPAInterface.deleteById(id);
     }

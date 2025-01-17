@@ -8,6 +8,7 @@ import java.time.OffsetDateTime
 import java.util.*
 
 @Entity(name = "tb_order")
+@Table(name = "tb_order")
 data class OrderEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -17,8 +18,8 @@ data class OrderEntity(
     @Generated
     var orderNumber: Long? = null,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "customer_id", nullable = true)
     val customer: CustomerEntity? = null,
 
     @Enumerated(EnumType.STRING)

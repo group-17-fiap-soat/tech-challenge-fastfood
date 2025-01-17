@@ -22,15 +22,6 @@ class OrderItemAdapter(
         return orderItemJPAInterface.saveAll(entityList.map(OrderItemMapper::toEntity))
     }
 
-    @Transactional(rollbackFor = [Exception::class])
-    override fun saveAllAndFetchData(entityList: List<OrderItemDto>): List<OrderItemEntity> {
-        val savedItems = orderItemJPAInterface.saveAll(entityList.map(OrderItemMapper::toEntity))
-
-        return orderItemJPAInterface.findAllByIdWithProduct(
-            savedItems.map { it.id!! }
-        )
-    }
-
     override fun findAllByOrderId(id: UUID): List<OrderItemEntity> {
         return orderItemJPAInterface.findAllByOrderId(id)
     }
