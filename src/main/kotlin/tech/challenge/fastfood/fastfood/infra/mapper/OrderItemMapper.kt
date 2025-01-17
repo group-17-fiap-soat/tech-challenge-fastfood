@@ -35,6 +35,7 @@ object OrderItemMapper {
         OrderItemResponseV1(
             id = orderItemDto.id,
             productId = orderItemDto.product?.id,
+            category = orderItemDto.product?.category,
             quantity = orderItemDto.quantity,
             price = orderItemDto.product?.price
         )

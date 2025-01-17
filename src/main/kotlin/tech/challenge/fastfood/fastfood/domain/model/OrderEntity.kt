@@ -4,6 +4,7 @@ import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.Generated
 import org.hibernate.annotations.UpdateTimestamp
+import tech.challenge.fastfood.fastfood.domain.model.enums.OrderStatusEnum
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -23,7 +24,7 @@ data class OrderEntity(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    val status: StatusOrderEntity? = null,
+    val status: OrderStatusEnum? = null,
 
     @CreationTimestamp
     @Column(name = "order_date")

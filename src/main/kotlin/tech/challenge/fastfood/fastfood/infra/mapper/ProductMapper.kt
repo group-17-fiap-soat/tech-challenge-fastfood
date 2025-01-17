@@ -2,6 +2,7 @@ package tech.challenge.fastfood.fastfood.infra.mapper
 
 import tech.challenge.fastfood.fastfood.application.dto.ProductDto
 import tech.challenge.fastfood.fastfood.domain.model.ProductEntity
+import tech.challenge.fastfood.fastfood.domain.model.enums.CategoryEnum
 import tech.challenge.fastfood.fastfood.infra.adapters.controllers.request.CreateProductRequestV1
 import tech.challenge.fastfood.fastfood.infra.adapters.controllers.request.UpdateProductRequestV1
 import tech.challenge.fastfood.fastfood.infra.adapters.controllers.response.ProductResponseV1
@@ -12,7 +13,7 @@ object ProductMapper {
         name = entity.name,
         description = entity.description,
         price = entity.price,
-        category = entity.category,
+        category = CategoryEnum.valueOf(entity.category!!),
         imageUrl = entity.imageUrl,
         createdAt = entity.createdAt,
         updatedAt = entity.updatedAt
@@ -23,7 +24,7 @@ object ProductMapper {
         name = dto.name,
         description = dto.description,
         price = dto.price,
-        category = dto.category,
+        category = dto.category.toString(),
         imageUrl = dto.imageUrl,
         createdAt = dto.createdAt,
         updatedAt = dto.updatedAt

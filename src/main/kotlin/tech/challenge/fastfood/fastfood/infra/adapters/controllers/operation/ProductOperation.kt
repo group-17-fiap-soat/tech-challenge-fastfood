@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.http.ResponseEntity
+import tech.challenge.fastfood.fastfood.domain.model.enums.CategoryEnum
 import tech.challenge.fastfood.fastfood.infra.adapters.controllers.request.CreateProductRequestV1
 import tech.challenge.fastfood.fastfood.infra.adapters.controllers.request.UpdateProductRequestV1
 import tech.challenge.fastfood.fastfood.infra.adapters.controllers.response.CustomerResponseV1
@@ -70,7 +71,7 @@ interface ProductOperation {
             content = [Content(mediaType = "application/json")]
         )]
     )
-    fun findAllByCategory(category: String): ResponseEntity<List<ProductResponseV1>>
+    fun findAllByCategory(category: CategoryEnum): ResponseEntity<List<ProductResponseV1>>
 
     @Operation(
         summary = "Remove um produto pelo id",
