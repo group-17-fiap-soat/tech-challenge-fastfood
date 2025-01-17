@@ -1,12 +1,14 @@
 package tech.challenge.fastfood.fastfood.domain.model
 
 import jakarta.persistence.*
-import org.springframework.data.annotation.CreatedDate
-import org.springframework.data.annotation.LastModifiedDate
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
+import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.OffsetDateTime
-import java.util.UUID
+import java.util.*
 
-@Entity(name = "customer")
+@Entity(name = "tb_customer")
+@EntityListeners(AuditingEntityListener::class)
 data class CustomerEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -21,11 +23,11 @@ data class CustomerEntity(
     @Column(name = "email")
     val email: String? = null,
 
-    @CreatedDate
+    @CreationTimestamp
     @Column(name = "created_at")
     var createdAt: OffsetDateTime? = null,
 
-    @LastModifiedDate
+    @UpdateTimestamp
     @Column(name = "updated_at")
     var updatedAt: OffsetDateTime? = null
 )
