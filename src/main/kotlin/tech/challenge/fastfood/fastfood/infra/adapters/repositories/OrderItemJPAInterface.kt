@@ -7,4 +7,5 @@ import java.util.*
 
 @Repository
 interface OrderItemJPAInterface : JpaRepository<OrderItemEntity, UUID> {
+    fun findAllByOrderId(id: UUID): List<OrderItemEntity>
 }

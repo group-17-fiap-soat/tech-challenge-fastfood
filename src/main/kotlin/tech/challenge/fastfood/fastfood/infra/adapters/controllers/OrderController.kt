@@ -21,6 +21,7 @@ class OrderController(
     @GetMapping
     override fun listOrders(): ResponseEntity<List<OrderDto>> {
         val orders = orderService.listOrders()
+
         return ResponseEntity.ok(orders)
     }
 
