@@ -1,10 +1,8 @@
-package tech.challenge.fastfood.fastfood.adapters.controllers
+package tech.challenge.fastfood.fastfood.infra.adapters.controllers
 
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.nio.file.Files
-import java.nio.file.Paths
 
 @RestController
 @RequestMapping("health-check")
