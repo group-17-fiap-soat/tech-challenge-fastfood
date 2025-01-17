@@ -19,10 +19,10 @@ class OrderController(
 
 
     @GetMapping
-    override fun listOrders(): ResponseEntity<List<OrderDto>> {
+    override fun listOrders(): ResponseEntity<List<OrderResponseV1>> {
         val orders = orderService.listOrders()
-
-        return ResponseEntity.ok(orders)
+        val response = orders?.map(OrderMapper::toOrderResponseV1)
+        return ResponseEntity.status(HttpStatus.OK).body(response)
     }
 
 
@@ -32,12 +32,8 @@ class OrderController(
         id: UUID
     ): ResponseEntity<OrderResponseV1> {
         val order = orderService.getOrderById(id)
-        return if (order != null) {
-            val response = OrderMapper.toOrderResponseV1(order)
-            ResponseEntity.ok(response)
-        } else {
-            ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)
-        }
+        val response = OrderMapper.toOrderResponseV1(order)
+        return ResponseEntity.status(HttpStatus.OK).body(response)
     }
 
 

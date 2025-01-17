@@ -22,14 +22,18 @@ class OrderServiceImpl(
 
     override fun listOrders(): List<OrderDto>? {
        val orders = orderRepositoryPort.findAll().map(OrderMapper::toDto)
-       return  orders.map { order ->
+       return orders.map { order ->
             val orderItems = orderItemRepositoryPort.findAllByOrderId(order.id!!)
             order.copy(orderItems = orderItems.map(OrderItemMapper::toDto))
         }
     }
 
-    override fun getOrderById(id: UUID): OrderDto? {
-        return orderRepositoryPort.findById(id)?.let(OrderMapper::toDto)
+    override fun getOrderById(id: UUID): OrderDto {
+        val order =  orderRepositoryPort.findById(id)?.let(OrderMapper::toDto) ?:
+        throw EntityNotFoundException("Pedido com o id ${id} não encontrado")
+
+        val orderItems = orderItemRepositoryPort.findAllByOrderId(order.id!!)
+        return order.copy(orderItems = orderItems.map(OrderItemMapper::toDto))
     }
 
     override fun createOrder(orderDto: OrderDto): OrderDto {

@@ -30,7 +30,7 @@ interface OrderOperation {
             content = [Content(mediaType = "application/json")]
         )]
     )
-    fun listOrders(): ResponseEntity<List<OrderDto>>
+    fun listOrders(): ResponseEntity<List<OrderResponseV1>>
 
     @Operation(
         summary = "Busca um pedido pelo ID",

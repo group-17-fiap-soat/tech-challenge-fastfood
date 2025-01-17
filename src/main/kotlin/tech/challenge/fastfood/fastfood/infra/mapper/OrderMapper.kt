@@ -38,6 +38,7 @@ object OrderMapper {
     fun toOrderResponseV1(dto: OrderDto) = OrderResponseV1(
         orderNumber = dto.orderNumber,
         idCustomer = dto.customer?.id,
+        orderItems = dto.orderItems.map{ it.id },
         status = dto.status,
     )
 }
