@@ -7,7 +7,7 @@ import java.util.UUID
 data class OrderResponseV1(
     val id: UUID? = null,
     val orderNumber: Long? = null,
-    val idCustomer: UUID? = null,
+    val customerId: UUID? = null,
     val orderItems: List<OrderItemResponseV1>? = null,
     val status: StatusOrderEntity? = null,
     val totalPrice: BigDecimal? = null

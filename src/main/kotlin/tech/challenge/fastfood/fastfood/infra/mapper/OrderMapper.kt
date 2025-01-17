@@ -1,6 +1,5 @@
 package tech.challenge.fastfood.fastfood.infra.mapper
 
-import tech.challenge.fastfood.fastfood.application.dto.CustomerDto
 import tech.challenge.fastfood.fastfood.application.dto.OrderDto
 import tech.challenge.fastfood.fastfood.domain.model.OrderEntity
 import tech.challenge.fastfood.fastfood.infra.adapters.controllers.request.CreateOrderRequestV1
@@ -11,7 +10,7 @@ object OrderMapper {
     fun toDto(entity: OrderEntity) = OrderDto(
         id = entity.id,
         orderNumber = entity.orderNumber,
-        customer = CustomerMapper.toDto(entity.customer),
+        customerId = entity.customerId,
         status = entity.status,
         orderDate = entity.orderDate,
         finishedAt = entity.finishedDate,
@@ -21,14 +20,14 @@ object OrderMapper {
 
 
     fun createOrderRequestToDto(requestV1: CreateOrderRequestV1) = OrderDto(
-        customer = requestV1.idCustomer?.let{ CustomerDto(id = requestV1.idCustomer) } ,
+        customerId = requestV1.customerId ,
         orderItems = requestV1.orderItems.map(OrderItemMapper::createOrderItemRequestToDto)
     )
 
     fun toEntity(dto: OrderDto) = OrderEntity(
         id = dto.id,
         orderNumber = dto.orderNumber,
-        customer = CustomerMapper.toEntity(dto.customer),
+        customerId = dto.customerId,
         status = dto.status,
         orderDate = dto.orderDate,
         finishedDate = dto.finishedAt,
@@ -39,7 +38,7 @@ object OrderMapper {
     fun toOrderResponseV1(dto: OrderDto) = OrderResponseV1(
         id = dto.id,
         orderNumber = dto.orderNumber,
-        idCustomer = dto.customer?.id,
+        customerId = dto.customerId,
         orderItems = dto.orderItems.map(OrderItemMapper::toOrderItemResponseV1),
         status = dto.status,
         totalPrice = dto.calculateTotalPrice()

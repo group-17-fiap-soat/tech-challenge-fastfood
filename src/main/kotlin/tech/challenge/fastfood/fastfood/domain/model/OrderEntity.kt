@@ -18,9 +18,8 @@ data class OrderEntity(
     @Generated
     var orderNumber: Long? = null,
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "customer_id", nullable = true)
-    val customer: CustomerEntity? = null,
+    @Column(name = "customer_id", nullable = true)
+    val customerId: UUID? = null,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")

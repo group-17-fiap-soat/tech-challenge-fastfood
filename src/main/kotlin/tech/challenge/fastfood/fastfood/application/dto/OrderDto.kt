@@ -8,7 +8,7 @@ data class OrderDto(
     val id: UUID? = null,
     val orderNumber: Long? = null,
     val orderItems: List<OrderItemDto> = listOf(),
-    val customer: CustomerDto? = null,
+    val customerId: UUID? = null,
     val status: StatusOrderEntity? = null,
     val orderDate: OffsetDateTime? = null,
     val finishedAt: OffsetDateTime? = null,
