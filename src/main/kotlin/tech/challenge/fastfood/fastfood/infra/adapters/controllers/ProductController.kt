@@ -34,7 +34,7 @@ class ProductController(
     ): ResponseEntity<ProductResponseV1> {
         val product = ProductMapper.updateProductRequestToDto(request)
         val response = productService.putProduct(product).let(ProductMapper::toProductResponseV1)
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping

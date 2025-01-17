@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity
 import tech.challenge.fastfood.fastfood.infra.adapters.controllers.request.CreateProductRequestV1
 import tech.challenge.fastfood.fastfood.infra.adapters.controllers.request.UpdateProductRequestV1
 import tech.challenge.fastfood.fastfood.infra.adapters.controllers.response.CustomerResponseV1
+import tech.challenge.fastfood.fastfood.infra.adapters.controllers.response.ErrorResponseV1
 import tech.challenge.fastfood.fastfood.infra.adapters.controllers.response.ProductResponseV1
 
 interface ProductOperation {
@@ -25,25 +26,31 @@ interface ProductOperation {
         ), ApiResponse(
             responseCode = "400",
             description = "Dados inválidos na requisição",
-            content = [Content(mediaType = "application/json")]
+            content = [Content(
+                mediaType = "application/json",
+                schema = Schema(implementation = ErrorResponseV1::class)
+            )]
         )]
     )
     fun createProduct(request: CreateProductRequestV1): ResponseEntity<ProductResponseV1>
 
 
     @Operation(
-        summary = "Cria um novo produto caso ele não exista, do contrário, atualiza um produto existente",
-        description = "Recebe os dados de um produto no corpo da requisição e cria/atualiza um novo registro no sistema."
+        summary = "Atualiza um produto existente",
+        description = "Recebe os dados de um produto no corpo da requisição e atualiza um novo registro no sistema."
     )
     @ApiResponses(
         value = [ApiResponse(
-            responseCode = "200", description = "Produto Criado/Atualizado com sucesso", content = [Content(
+            responseCode = "200", description = "Produto atualizado com sucesso", content = [Content(
                 mediaType = "application/json", schema = Schema(implementation = ProductResponseV1::class)
             )]
         ), ApiResponse(
             responseCode = "400",
             description = "Dados inválidos na requisição",
-            content = [Content(mediaType = "application/json")]
+            content = [Content(
+                mediaType = "application/json",
+                schema = Schema(implementation = ErrorResponseV1::class)
+            )]
         )]
     )
     fun putProduct(request: UpdateProductRequestV1): ResponseEntity<ProductResponseV1>

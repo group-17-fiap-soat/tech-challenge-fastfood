@@ -20,7 +20,7 @@ class ProductAdapter(
         return productJPAInterface.findAllByCategory(category)
     }
 
-    override fun findById(id: UUID): ProductEntity {
+    override fun findById(id: UUID): ProductEntity? {
         return productJPAInterface.findById(id).orElse(null)
     }
 
