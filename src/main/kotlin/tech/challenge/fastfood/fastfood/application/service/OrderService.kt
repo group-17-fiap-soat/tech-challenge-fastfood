@@ -5,6 +5,6 @@ import java.util.*
 
 interface OrderService {
     fun listOrders(): List<OrderDto>?
-    fun getOrderById(id: UUID): OrderDto?
+    fun getOrderById(id: UUID): OrderDto
     fun createOrder(orderDto: OrderDto): OrderDto
 }

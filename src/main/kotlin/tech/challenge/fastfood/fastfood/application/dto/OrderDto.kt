@@ -7,6 +7,7 @@ import java.util.*
 data class OrderDto(
     val id: UUID? = null,
     val orderNumber: Long? = null,
+    val orderItems: List<OrderItemDto> = listOf(),
     val customer: CustomerDto? = null,
     val status: StatusOrderEntity? = null,
     val orderDate: OffsetDateTime? = null,

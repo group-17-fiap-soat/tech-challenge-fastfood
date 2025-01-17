@@ -21,6 +21,7 @@ object OrderMapper {
 
     fun createOrderRequestToDto(requestV1: CreateOrderRequestV1) = OrderDto(
         customer = CustomerDto(id = requestV1.idCustomer),
+        orderItems = requestV1.orderItems.map(OrderItemMapper::createOrderItemRequestToDto)
     )
 
     fun toEntity(dto: OrderDto) = OrderEntity(
@@ -37,6 +38,7 @@ object OrderMapper {
     fun toOrderResponseV1(dto: OrderDto) = OrderResponseV1(
         orderNumber = dto.orderNumber,
         idCustomer = dto.customer?.id,
+        orderItems = dto.orderItems.map{ it.id },
         status = dto.status,
     )
 }
