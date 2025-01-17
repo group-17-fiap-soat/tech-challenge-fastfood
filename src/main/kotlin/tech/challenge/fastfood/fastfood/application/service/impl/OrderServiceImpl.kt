@@ -39,6 +39,7 @@ class OrderServiceImpl(
         return order.copy(orderItems = orderItems.map(OrderItemMapper::toDto))
     }
 
+    @Transactional(rollbackFor = [Exception::class])
     override fun createOrder(orderDto: OrderDto): OrderDto {
         validateOrderItems(orderItems = orderDto.orderItems)
 
