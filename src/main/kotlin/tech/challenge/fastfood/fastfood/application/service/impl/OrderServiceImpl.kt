@@ -41,17 +41,20 @@ class OrderServiceImpl(
 
         val orderEntity = orderRepositoryPort.save(orderDto)
         val orderItems: List<OrderItemDto> = orderDto.orderItems.map{ it.copy(orderId = orderEntity.id) }
-        orderItemRepositoryPort.saveAll(orderItems)
-        return OrderMapper.toDto(orderEntity)
+        val savedOrderItems = orderItemRepositoryPort.saveAllAndFetchData(orderItems)
+
+        return OrderMapper.toDto(orderEntity).copy(orderItems = savedOrderItems.map(OrderItemMapper::toDto))
     }
+
+
 
     private fun validateOrderItems(orderItems:List<OrderItemDto>) {
         if(orderItems.isEmpty()){
             throw BadRequestException("O pedido deve conter produtos")
         }
 
-        if(orderItems.size != orderItems.distinctBy { it.productId }.size){
-            val duplicatedItems = orderItems.groupingBy { it.productId }
+        if(orderItems.size != orderItems.distinctBy { it.product?.id }.size){
+            val duplicatedItems = orderItems.groupingBy { it.product?.id }
                 .eachCount()
                 .filter { it.value > 1 }
                 .keys

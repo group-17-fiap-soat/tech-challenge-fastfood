@@ -48,10 +48,10 @@ object ProductMapper {
 
     fun toProductResponseV1(productDto: ProductDto) = ProductResponseV1(
         id = productDto.id,
-        name = productDto.name,
+        name = productDto.name!!,
         description = productDto.description,
-        price = productDto.price,
-        category = productDto.category,
+        price = productDto.price!!,
+        category = productDto.category!!,
         imageUrl = productDto.imageUrl
     )
 }
