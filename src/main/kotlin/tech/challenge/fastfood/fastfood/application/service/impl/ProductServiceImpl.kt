@@ -1,7 +1,6 @@
 package tech.challenge.fastfood.fastfood.application.service.impl
 
 import jakarta.persistence.EntityNotFoundException
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.stereotype.Service
 import tech.challenge.fastfood.fastfood.application.dto.ProductDto
 import tech.challenge.fastfood.fastfood.application.service.ProductService
@@ -16,6 +15,11 @@ class ProductServiceImpl(
     override fun createProduct(productDto: ProductDto): ProductDto {
         return ProductMapper.toDto(productRepositoryPort.save(productDto))
     }
+
+    override fun findById(id: UUID): ProductDto? {
+        return productRepositoryPort.findById(id)?.let(ProductMapper::toDto)
+    }
+
 
     override fun putProduct(productDto: ProductDto): ProductDto {
             requireNotNull(productDto.id){ "O id do produto não pode ser nulo" }
