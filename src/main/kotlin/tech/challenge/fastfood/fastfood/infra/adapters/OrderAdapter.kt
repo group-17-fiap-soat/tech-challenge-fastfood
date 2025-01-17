@@ -3,7 +3,7 @@ package tech.challenge.fastfood.fastfood.infra.adapters
 import org.springframework.stereotype.Component
 import tech.challenge.fastfood.fastfood.application.dto.OrderDto
 import tech.challenge.fastfood.fastfood.domain.model.OrderEntity
-import tech.challenge.fastfood.fastfood.domain.model.StatusOrderEntity
+import tech.challenge.fastfood.fastfood.domain.model.enums.OrderStatusEnum
 import tech.challenge.fastfood.fastfood.domain.port.OrderRepositoryPort
 import tech.challenge.fastfood.fastfood.infra.adapters.repositories.OrderJPAInterface
 import tech.challenge.fastfood.fastfood.infra.mapper.OrderMapper
@@ -24,7 +24,7 @@ class OrderAdapter(
 
     override fun save(entity: OrderDto): OrderEntity {
         val orderEntity = OrderMapper.toEntity(entity)
-            .copy(status = StatusOrderEntity.RECEIVED)
+            .copy(status = OrderStatusEnum.RECEIVED)
 
         return orderJPAInterface.save(orderEntity)
     }

@@ -18,15 +18,15 @@ data class ProductEntity(
     var id: UUID? = null,
 
     @Column(nullable = false)
-    var name: String,
+    var name: String? = null,
 
     var description: String? = null,
 
     @Column(nullable = false)
-    var price: BigDecimal,
+    var price: BigDecimal? = null,
 
     @Column(nullable = false)
-    var category: String,
+    var category: String? = null,
 
     var imageUrl: String? = null,
 

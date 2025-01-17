@@ -4,10 +4,12 @@ import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.Generated
 import org.hibernate.annotations.UpdateTimestamp
+import tech.challenge.fastfood.fastfood.domain.model.enums.OrderStatusEnum
 import java.time.OffsetDateTime
 import java.util.*
 
 @Entity(name = "tb_order")
+@Table(name = "tb_order")
 data class OrderEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -17,13 +19,12 @@ data class OrderEntity(
     @Generated
     var orderNumber: Long? = null,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
-    val customer: CustomerEntity? = null,
+    @Column(name = "customer_id", nullable = true)
+    val customerId: UUID? = null,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    val status: StatusOrderEntity? = null,
+    val status: OrderStatusEnum? = null,
 
     @CreationTimestamp
     @Column(name = "order_date")

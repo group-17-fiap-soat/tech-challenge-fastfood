@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import tech.challenge.fastfood.fastfood.application.service.ProductService
+import tech.challenge.fastfood.fastfood.domain.model.enums.CategoryEnum
 import tech.challenge.fastfood.fastfood.infra.adapters.controllers.operation.ProductOperation
 import tech.challenge.fastfood.fastfood.infra.adapters.controllers.request.CreateProductRequestV1
 import tech.challenge.fastfood.fastfood.infra.adapters.controllers.request.UpdateProductRequestV1
@@ -40,9 +41,9 @@ class ProductController(
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     override fun findAllByCategory(
-        @RequestParam category: String
+        @RequestParam category: CategoryEnum
     ): ResponseEntity<List<ProductResponseV1>> {
-        val productList =  productService.findAllByCategory(category).map(ProductMapper::toProductResponseV1)
+        val productList =  productService.findAllByCategory(category.toString()).map(ProductMapper::toProductResponseV1)
         return ResponseEntity.status(200).body(productList);
     }
 

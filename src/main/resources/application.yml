@@ -12,6 +12,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+      cache:
+        use_second_level_cache: false
+      use_query_cache: false
     show-sql: true
     properties:
       hibernate:
