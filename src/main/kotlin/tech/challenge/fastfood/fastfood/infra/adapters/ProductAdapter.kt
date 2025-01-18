@@ -28,6 +28,10 @@ class ProductAdapter(
         return productJPAInterface.findByOrderItemId(id).orElse(null)
     }
 
+    override fun findAll(): List<ProductEntity> {
+        return productJPAInterface.findAll()
+    }
+
     override fun delete(id: UUID) {
        return productJPAInterface.deleteById(id);
     }
