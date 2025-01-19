@@ -33,6 +33,10 @@ class CustomerServiceImpl(
 
     private fun isValidCpf(cpf: String) = cpf.matches(Regex("^[0-9]{11}$"))
 
+    fun isValidEmail(email: String): Boolean {
+        val emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+        return email.matches(emailRegex.toRegex())
+    }
 
     private fun isCpfAlreadyRegistered(cpf: String): Boolean {
         return customerRepositoryPort.findByCpf(cpf) != null
@@ -46,6 +50,8 @@ class CustomerServiceImpl(
         val cpf = checkNotNull(customerDto.cpf) {
             throw InvalidCustomerDataException("CPF tem que ser preenchido.")
         }
+        if (customerDto.email!= null && !isValidEmail(customerDto.email))
+            throw InvalidCustomerDataException("Email inválido.")
 
         if (!isValidCpf(cpf))
             throw InvalidCustomerDataException("CPF inválido.")
