@@ -40,10 +40,10 @@ class ProductController(
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    override fun findAllByCategory(
-        @RequestParam category: CategoryEnum
+    override fun findAll(
+        @RequestParam category: CategoryEnum?
     ): ResponseEntity<List<ProductResponseV1>> {
-        val productList =  productService.findAllByCategory(category.toString()).map(ProductMapper::toProductResponseV1)
+        val productList =  productService.findAll(category = category?.toString()).map(ProductMapper::toProductResponseV1)
         return ResponseEntity.status(200).body(productList);
     }
 

@@ -57,8 +57,8 @@ interface ProductOperation {
     fun putProduct(request: UpdateProductRequestV1): ResponseEntity<ProductResponseV1>
 
     @Operation(
-        summary = "Lista produtos pela categoria",
-        description = "Lista produtos pela categoria"
+        summary = "Lista produtos",
+        description = "Lista produtos, sendo possível buscar produtos por categoria"
     )
     @ApiResponses(
         value = [ApiResponse(
@@ -71,7 +71,7 @@ interface ProductOperation {
             content = [Content(mediaType = "application/json")]
         )]
     )
-    fun findAllByCategory(category: CategoryEnum): ResponseEntity<List<ProductResponseV1>>
+    fun findAll(category: CategoryEnum?): ResponseEntity<List<ProductResponseV1>>
 
     @Operation(
         summary = "Remove um produto pelo id",

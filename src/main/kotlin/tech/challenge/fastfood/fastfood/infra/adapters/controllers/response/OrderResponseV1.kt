@@ -10,5 +10,6 @@ data class OrderResponseV1(
     val customerId: UUID? = null,
     val orderItems: List<OrderItemResponseV1>? = null,
     val status: OrderStatusEnum? = null,
-    val totalPrice: BigDecimal? = null
+    val totalPrice: BigDecimal? = null,
+    val orderPaid: Boolean = true // FAKE CHECKOUT - o pedido sempre vai ser considerado como pago assim que for feito
 )
