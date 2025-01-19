@@ -22,22 +22,25 @@ class ProductServiceImpl(
 
 
     override fun putProduct(productDto: ProductDto): ProductDto {
-            requireNotNull(productDto.id){ "O id do produto não pode ser nulo" }
-            val entityToUpdate = productRepositoryPort.findById(productDto.id)
-           val updatedEntity =  entityToUpdate?.let{
-                productRepositoryPort.save(productDto)
-            } ?: throw EntityNotFoundException("A entidade com o id fornecido não existe, revise o corpo da requisição")
+        requireNotNull(productDto.id) { "O id do produto não pode ser nulo" }
+        val entityToUpdate = productRepositoryPort.findById(productDto.id)
+        val updatedEntity = entityToUpdate?.let {
+            productRepositoryPort.save(productDto)
+        } ?: throw EntityNotFoundException("A entidade com o id fornecido não existe, revise o corpo da requisição")
         return ProductMapper.toDto(updatedEntity)
     }
 
-    override fun findAllByCategory(category: String): List<ProductDto> {
-        return productRepositoryPort.findAllByCategory(category).map(ProductMapper::toDto)
+    override fun findAll(category: String?): List<ProductDto> {
+        val products =
+            category?.let { productRepositoryPort.findAllByCategory(category) }
+                ?: productRepositoryPort.findAll()
+        return products.map(ProductMapper::toDto)
     }
 
     override fun removeProductById(id: UUID) {
-       val entityToDelete = productRepositoryPort.findById(id)
-       entityToDelete?.let { productRepositoryPort.delete(id) } ?:
-       throw EntityNotFoundException("A entidade com o id fornecido não existe, revise o corpo da requisição")
+        val entityToDelete = productRepositoryPort.findById(id)
+        entityToDelete?.let { productRepositoryPort.delete(id) }
+            ?: throw EntityNotFoundException("A entidade com o id fornecido não existe, revise o corpo da requisição")
     }
 
 
