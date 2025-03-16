@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastfood-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastfood-app
+  template:
+    metadata:
+      labels:
+        app: fastfood-app
+    spec:
+      containers:
+        - name: fastfood
+          image: tech-challenge-fastfood:1.0  # Local Docker image
+          imagePullPolicy: Never  # Use locally built image, don’t pull from a registry
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DATABASE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: fastfood-config
+                  key: DATABASE_HOST
+
+            - name: DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: fastfood-config
+                  key: DATABASE
+
+            - name: DATABASE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: fastfood-config
+                  key: DATABASE_PORT
+
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: fastfood-secret
+                  key: DATABASE_USER
+
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: fastfood-secret
+                  key: DATABASE_PASSWORD
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastfood-service
+spec:
+  type: ClusterIP
+  selector:
+    app: fastfood-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fastfood-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: springboot.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: fastfood-service
+                port:
+                  number: 80
