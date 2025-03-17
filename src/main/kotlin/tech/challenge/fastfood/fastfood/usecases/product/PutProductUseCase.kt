@@ -1,10 +1,13 @@
 package tech.challenge.fastfood.fastfood.usecases.product
 
 import jakarta.persistence.EntityNotFoundException
+import org.springframework.stereotype.Service
 import tech.challenge.fastfood.fastfood.common.dtos.ProductDto
 import tech.challenge.fastfood.fastfood.common.interfaces.gateway.ProductGatewayInterface
 import tech.challenge.fastfood.fastfood.adapters.presenters.ProductMapper
 
+
+@Service
 class PutProductUseCase(
     private val productGatewayInterface: ProductGatewayInterface
 ) {

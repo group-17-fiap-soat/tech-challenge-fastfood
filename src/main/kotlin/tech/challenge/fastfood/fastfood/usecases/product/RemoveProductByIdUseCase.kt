@@ -1,9 +1,11 @@
 package tech.challenge.fastfood.fastfood.usecases.product
 
 import jakarta.persistence.EntityNotFoundException
+import org.springframework.stereotype.Service
 import tech.challenge.fastfood.fastfood.common.interfaces.gateway.ProductGatewayInterface
 import java.util.*
 
+@Service
 class RemoveProductByIdUseCase(
     private val productGatewayInterface: ProductGatewayInterface
 ) {

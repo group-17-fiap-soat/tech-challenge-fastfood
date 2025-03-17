@@ -1,6 +1,7 @@
 package tech.challenge.fastfood.fastfood.usecases.order
 
 import jakarta.persistence.EntityNotFoundException
+import org.springframework.stereotype.Service
 import tech.challenge.fastfood.fastfood.common.dtos.OrderDto
 import tech.challenge.fastfood.fastfood.common.interfaces.gateway.OrderGatewayInterface
 import tech.challenge.fastfood.fastfood.common.interfaces.gateway.OrderItemGatewayInterface
@@ -8,6 +9,7 @@ import tech.challenge.fastfood.fastfood.adapters.presenters.OrderItemMapper
 import tech.challenge.fastfood.fastfood.adapters.presenters.OrderMapper
 import java.util.*
 
+@Service
 class GetOrderByIdUseCase(
     private val orderGatewayInterface: OrderGatewayInterface,
     private val orderItemGatewayInterface: OrderItemGatewayInterface
