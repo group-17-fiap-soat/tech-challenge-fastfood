@@ -20,7 +20,7 @@ interface OrderOperation {
     @ApiResponses(
         value = [ApiResponse(
             responseCode = "200", description = "Pedidos encontrados", content = [Content(
-                mediaType = "application/json", schema = Schema(implementation = tech.challenge.fastfood.fastfood.common.dtos.response.OrderResponseV1::class)
+                mediaType = "application/json", schema = Schema(implementation = OrderResponseV1::class)
             )]
         ), ApiResponse(
             responseCode = "404",
@@ -28,7 +28,7 @@ interface OrderOperation {
             content = [Content(mediaType = "application/json")]
         )]
     )
-    fun listOrders(): ResponseEntity<List<tech.challenge.fastfood.fastfood.common.dtos.response.OrderResponseV1>>
+    fun listOrders(): ResponseEntity<List<OrderResponseV1>>
 
     @Operation(
         summary = "Busca um pedido pelo ID",
@@ -37,7 +37,7 @@ interface OrderOperation {
     @ApiResponses(
         value = [ApiResponse(
             responseCode = "200", description = "Pedido encontrado", content = [Content(
-                mediaType = "application/json", schema = Schema(implementation = tech.challenge.fastfood.fastfood.common.dtos.response.OrderResponseV1::class)
+                mediaType = "application/json", schema = Schema(implementation = OrderResponseV1::class)
             )]
         ), ApiResponse(
             responseCode = "404",
@@ -48,7 +48,7 @@ interface OrderOperation {
     fun getOrderById(
         @PathVariable
         id: UUID
-    ): ResponseEntity<tech.challenge.fastfood.fastfood.common.dtos.response.OrderResponseV1>
+    ): ResponseEntity<OrderResponseV1>
 
 
     @Operation(
@@ -58,7 +58,7 @@ interface OrderOperation {
     @ApiResponses(
         value = [ApiResponse(
             responseCode = "201", description = "Pedido criado com sucesso", content = [Content(
-                mediaType = "application/json", schema = Schema(implementation = tech.challenge.fastfood.fastfood.common.dtos.response.OrderResponseV1::class)
+                mediaType = "application/json", schema = Schema(implementation = OrderResponseV1::class)
             )]
         ), ApiResponse(
             responseCode = "400",
@@ -67,6 +67,6 @@ interface OrderOperation {
         )]
     )
     fun createOrder(
-        @RequestBody request: tech.challenge.fastfood.fastfood.common.dtos.request.CreateOrderRequestV1
-    ): ResponseEntity<tech.challenge.fastfood.fastfood.common.dtos.response.OrderResponseV1>
+        @RequestBody request: CreateOrderRequestV1
+    ): ResponseEntity<OrderResponseV1>
 }

@@ -22,18 +22,18 @@ interface ProductOperation {
     @ApiResponses(
         value = [ApiResponse(
             responseCode = "201", description = "Produto criado com sucesso", content = [Content(
-                mediaType = "application/json", schema = Schema(implementation = tech.challenge.fastfood.fastfood.common.dtos.response.CustomerResponseV1::class)
+                mediaType = "application/json", schema = Schema(implementation = CustomerResponseV1::class)
             )]
         ), ApiResponse(
             responseCode = "400",
             description = "Dados inválidos na requisição",
             content = [Content(
                 mediaType = "application/json",
-                schema = Schema(implementation = tech.challenge.fastfood.fastfood.common.dtos.response.ErrorResponseV1::class)
+                schema = Schema(implementation = ErrorResponseV1::class)
             )]
         )]
     )
-    fun createProduct(request: tech.challenge.fastfood.fastfood.common.dtos.request.CreateProductRequestV1): ResponseEntity<tech.challenge.fastfood.fastfood.common.dtos.response.ProductResponseV1>
+    fun createProduct(request: CreateProductRequestV1): ResponseEntity<ProductResponseV1>
 
 
     @Operation(
@@ -43,18 +43,18 @@ interface ProductOperation {
     @ApiResponses(
         value = [ApiResponse(
             responseCode = "200", description = "Produto atualizado com sucesso", content = [Content(
-                mediaType = "application/json", schema = Schema(implementation = tech.challenge.fastfood.fastfood.common.dtos.response.ProductResponseV1::class)
+                mediaType = "application/json", schema = Schema(implementation = ProductResponseV1::class)
             )]
         ), ApiResponse(
             responseCode = "400",
             description = "Dados inválidos na requisição",
             content = [Content(
                 mediaType = "application/json",
-                schema = Schema(implementation = tech.challenge.fastfood.fastfood.common.dtos.response.ErrorResponseV1::class)
+                schema = Schema(implementation = ErrorResponseV1::class)
             )]
         )]
     )
-    fun putProduct(request: tech.challenge.fastfood.fastfood.common.dtos.request.UpdateProductRequestV1): ResponseEntity<tech.challenge.fastfood.fastfood.common.dtos.response.ProductResponseV1>
+    fun putProduct(request: UpdateProductRequestV1): ResponseEntity<ProductResponseV1>
 
     @Operation(
         summary = "Lista produtos",
@@ -63,7 +63,7 @@ interface ProductOperation {
     @ApiResponses(
         value = [ApiResponse(
             responseCode = "200", description = "Lista de produtos recuperada com sucesso", content = [Content(
-                mediaType = "application/json", schema = Schema(implementation = tech.challenge.fastfood.fastfood.common.dtos.response.ProductResponseV1::class)
+                mediaType = "application/json", schema = Schema(implementation = ProductResponseV1::class)
             )]
         ), ApiResponse(
             responseCode = "400",
@@ -71,7 +71,7 @@ interface ProductOperation {
             content = [Content(mediaType = "application/json")]
         )]
     )
-    fun findAll(category: tech.challenge.fastfood.fastfood.common.enums.CategoryEnum?): ResponseEntity<List<tech.challenge.fastfood.fastfood.common.dtos.response.ProductResponseV1>>
+    fun findAll(category: CategoryEnum?): ResponseEntity<List<ProductResponseV1>>
 
     @Operation(
         summary = "Remove um produto pelo id",
@@ -80,7 +80,7 @@ interface ProductOperation {
     @ApiResponses(
         value = [ApiResponse(
             responseCode = "201", description = "Produto criado com sucesso", content = [Content(
-                mediaType = "application/json", schema = Schema(implementation = tech.challenge.fastfood.fastfood.common.dtos.response.ProductResponseV1::class)
+                mediaType = "application/json", schema = Schema(implementation = ProductResponseV1::class)
             )]
         ), ApiResponse(
             responseCode = "400",

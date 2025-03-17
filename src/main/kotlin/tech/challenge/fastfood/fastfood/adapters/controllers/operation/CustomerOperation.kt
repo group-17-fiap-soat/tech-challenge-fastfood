@@ -23,7 +23,7 @@ interface CustomerOperation {
     @ApiResponses(
         value = [ApiResponse(
             responseCode = "201", description = "Cliente criado com sucesso", content = [Content(
-                mediaType = "application/json", schema = Schema(implementation = tech.challenge.fastfood.fastfood.common.dtos.response.CustomerResponseV1::class)
+                mediaType = "application/json", schema = Schema(implementation = CustomerResponseV1::class)
             )]
         ), ApiResponse(
             responseCode = "400",
@@ -32,8 +32,8 @@ interface CustomerOperation {
         )]
     )
     fun createCustomer(
-        @RequestBody request: tech.challenge.fastfood.fastfood.common.dtos.request.CreateCustomerRequestV1
-    ): ResponseEntity<tech.challenge.fastfood.fastfood.common.dtos.response.CustomerResponseV1>
+        @RequestBody request: CreateCustomerRequestV1
+    ): ResponseEntity<CustomerResponseV1>
 
 
     @Operation(
@@ -43,7 +43,7 @@ interface CustomerOperation {
     @ApiResponses(
         value = [ApiResponse(
             responseCode = "200", description = "Autenticação bem-sucedida", content = [Content(
-                mediaType = "application/json", schema = Schema(implementation = tech.challenge.fastfood.fastfood.common.dtos.response.CustomerResponseV1::class)
+                mediaType = "application/json", schema = Schema(implementation = CustomerResponseV1::class)
             )]
         ), ApiResponse(
             responseCode = "401",
@@ -53,8 +53,8 @@ interface CustomerOperation {
     )
     fun authenticate(
         @RequestBody
-        authRequest: tech.challenge.fastfood.fastfood.common.dtos.request.AuthCustomerRequestV1
-    ): ResponseEntity<tech.challenge.fastfood.fastfood.common.dtos.response.CustomerResponseV1>
+        authRequest: AuthCustomerRequestV1
+    ): ResponseEntity<CustomerResponseV1>
 
 
     @Operation(
@@ -64,7 +64,7 @@ interface CustomerOperation {
     @ApiResponses(
         value = [ApiResponse(
             responseCode = "200", description = "Cliente encontrado", content = [Content(
-                mediaType = "application/json", schema = Schema(implementation = tech.challenge.fastfood.fastfood.common.dtos.response.CustomerResponseV1::class)
+                mediaType = "application/json", schema = Schema(implementation = CustomerResponseV1::class)
             )]
         ), ApiResponse(
             responseCode = "404",
@@ -76,7 +76,7 @@ interface CustomerOperation {
      fun getCustomerById(
         @PathVariable
         id: UUID
-    ): ResponseEntity<tech.challenge.fastfood.fastfood.common.dtos.response.CustomerResponseV1>
+    ): ResponseEntity<CustomerResponseV1>
 
 
 

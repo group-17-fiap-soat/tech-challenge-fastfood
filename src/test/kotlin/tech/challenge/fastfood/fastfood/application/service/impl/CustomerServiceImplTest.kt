@@ -10,22 +10,29 @@ import tech.challenge.fastfood.fastfood.common.dtos.CustomerDto
 import tech.challenge.fastfood.fastfood.common.interfaces.gateway.CustomerGatewayInterface
 import tech.challenge.fastfood.fastfood.common.exception.InvalidCustomerDataException
 import tech.challenge.fastfood.fastfood.adapters.presenters.CustomerMapper
+import tech.challenge.fastfood.fastfood.usecases.customer.CreateCustomerUseCase
+import tech.challenge.fastfood.fastfood.usecases.customer.GetCustomerByCpfUseCase
+import tech.challenge.fastfood.fastfood.usecases.customer.GetCustomerByIdUseCase
 import java.util.*
 
 class CustomerServiceImplTest {
 
     private lateinit var customerGatewayInterface: CustomerGatewayInterface
-    private lateinit var customerService: CustomerServiceImpl
+    private lateinit var createCustomerUseCase: CreateCustomerUseCase
+    private lateinit var getCustomerByCpfUseCase: GetCustomerByCpfUseCase
+    private lateinit var getCustomerByIdUseCase: GetCustomerByIdUseCase
 
     @BeforeEach
     fun setUp() {
         customerGatewayInterface = mock()
-        customerService = CustomerServiceImpl(customerGatewayInterface)
+        createCustomerUseCase = CreateCustomerUseCase(customerGatewayInterface)
+        getCustomerByCpfUseCase = GetCustomerByCpfUseCase(customerGatewayInterface)
+        getCustomerByIdUseCase = GetCustomerByIdUseCase(customerGatewayInterface)
     }
 
     @Test
     fun `createCustomer - sucesso`() {
-        val customerDto = tech.challenge.fastfood.fastfood.common.dtos.CustomerDto(
+        val customerDto = CustomerDto(
             cpf = "12345678901",
             name = "João",
             email = "joao@example.com"
@@ -36,7 +43,7 @@ class CustomerServiceImplTest {
         `when`(customerGatewayInterface.findByCpf("12345678901")).thenReturn(null)
         `when`(customerGatewayInterface.findByEmail("joao@example.com")).thenReturn(null)
 
-        val result = customerService.createCustomer(customerDto)
+        val result = createCustomerUseCase.execute(customerDto)
 
         assertEquals(customerDto.cpf, result.cpf)
         assertEquals(customerDto.name, result.name)
@@ -46,14 +53,14 @@ class CustomerServiceImplTest {
 
     @Test
     fun `createCustomer - falha CPF ausente`() {
-        val customerDto = tech.challenge.fastfood.fastfood.common.dtos.CustomerDto(
+        val customerDto = CustomerDto(
             cpf = null,
             name = "João",
             email = "joao@example.com"
         )
 
-        val exception = assertThrows<tech.challenge.fastfood.fastfood.common.exception.InvalidCustomerDataException> {
-            customerService.createCustomer(customerDto)
+        val exception = assertThrows<InvalidCustomerDataException> {
+            createCustomerUseCase.execute(customerDto)
         }
 
         assertEquals("CPF tem que ser preenchido.", exception.message)
@@ -61,14 +68,14 @@ class CustomerServiceImplTest {
 
     @Test
     fun `createCustomer - falha CPF inválido`() {
-        val customerDto = tech.challenge.fastfood.fastfood.common.dtos.CustomerDto(
+        val customerDto = CustomerDto(
             cpf = "12345",
             name = "João",
             email = "joao@example.com"
         )
 
-        val exception = assertThrows<tech.challenge.fastfood.fastfood.common.exception.InvalidCustomerDataException> {
-            customerService.createCustomer(customerDto)
+        val exception = assertThrows<InvalidCustomerDataException> {
+            createCustomerUseCase.execute(customerDto)
         }
 
         assertEquals("CPF inválido.", exception.message)
@@ -76,7 +83,7 @@ class CustomerServiceImplTest {
 
     @Test
     fun `createCustomer - falha CPF já cadastrado`() {
-        val customerDto = tech.challenge.fastfood.fastfood.common.dtos.CustomerDto(
+        val customerDto = CustomerDto(
             cpf = "12345678901",
             name = "João",
             email = "joao@example.com"
@@ -84,8 +91,8 @@ class CustomerServiceImplTest {
 
         `when`(customerGatewayInterface.findByCpf("12345678901")).thenReturn(CustomerMapper.toEntity(customerDto))
 
-        val exception = assertThrows<tech.challenge.fastfood.fastfood.common.exception.InvalidCustomerDataException> {
-            customerService.createCustomer(customerDto)
+        val exception = assertThrows<InvalidCustomerDataException> {
+            createCustomerUseCase.execute(customerDto)
         }
 
         assertEquals("CPF já cadastrado.", exception.message)
@@ -93,7 +100,7 @@ class CustomerServiceImplTest {
 
     @Test
     fun `createCustomer - falha Email já cadastrado`() {
-        val customerDto = tech.challenge.fastfood.fastfood.common.dtos.CustomerDto(
+        val customerDto = CustomerDto(
             cpf = "12345678901",
             name = "João",
             email = "joao@example.com"
@@ -101,8 +108,8 @@ class CustomerServiceImplTest {
 
         `when`(customerGatewayInterface.findByEmail("joao@example.com")).thenReturn(CustomerMapper.toEntity(customerDto))
 
-        val exception = assertThrows<tech.challenge.fastfood.fastfood.common.exception.InvalidCustomerDataException> {
-            customerService.createCustomer(customerDto)
+        val exception = assertThrows<InvalidCustomerDataException> {
+            createCustomerUseCase.execute(customerDto)
         }
 
         assertEquals("Email já cadastrado.", exception.message)
@@ -110,7 +117,7 @@ class CustomerServiceImplTest {
 
     @Test
     fun `getCustomerByCpf - sucesso`() {
-        val customerDto = tech.challenge.fastfood.fastfood.common.dtos.CustomerDto(
+        val customerDto = CustomerDto(
             cpf = "12345678901",
             name = "João",
             email = "joao@example.com"
@@ -118,7 +125,7 @@ class CustomerServiceImplTest {
 
         `when`(customerGatewayInterface.findByCpf("12345678901")).thenReturn(CustomerMapper.toEntity(customerDto))
 
-        val result = customerService.getCustomerByCpf("12345678901")
+        val result = getCustomerByCpfUseCase.execute("12345678901")
 
         assertEquals(customerDto.cpf, result?.cpf)
         assertEquals(customerDto.name, result?.name)
@@ -127,8 +134,8 @@ class CustomerServiceImplTest {
 
     @Test
     fun `getCustomerByCpf - falha CPF inválido`() {
-        val exception = assertThrows<tech.challenge.fastfood.fastfood.common.exception.InvalidCustomerDataException> {
-            customerService.getCustomerByCpf("12345")
+        val exception = assertThrows<InvalidCustomerDataException> {
+            getCustomerByCpfUseCase.execute("12345")
         }
 
         assertEquals("CPF inválido.", exception.message)
@@ -138,14 +145,14 @@ class CustomerServiceImplTest {
     fun `getCustomerByCpf - falha Cliente não encontrado`() {
         `when`(customerGatewayInterface.findByCpf("12345678901")).thenReturn(null)
 
-        val result = customerService.getCustomerByCpf("12345678901")
+        val result = getCustomerByCpfUseCase.execute("12345678901")
 
         assertNull(result)
     }
 
     @Test
     fun `getCustomerById - sucesso`() {
-        val customerDto = tech.challenge.fastfood.fastfood.common.dtos.CustomerDto(
+        val customerDto = CustomerDto(
             cpf = "12345678901",
             name = "João",
             email = "joao@example.com"
@@ -154,7 +161,7 @@ class CustomerServiceImplTest {
 
         `when`(customerGatewayInterface.findById(customerId)).thenReturn(CustomerMapper.toEntity(customerDto))
 
-        val result = customerService.getCustomerById(customerId)
+        val result = getCustomerByIdUseCase.execute(customerId)
 
         assertEquals(customerDto.cpf, result?.cpf)
         assertEquals(customerDto.name, result?.name)
@@ -167,7 +174,7 @@ class CustomerServiceImplTest {
 
         `when`(customerGatewayInterface.findById(customerId)).thenReturn(null)
 
-        val result = customerService.getCustomerById(customerId)
+        val result = getCustomerByIdUseCase.execute(customerId)
 
         assertNull(result)
     }

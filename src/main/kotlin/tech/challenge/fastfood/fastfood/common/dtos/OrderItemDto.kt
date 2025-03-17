@@ -5,7 +5,7 @@ import java.util.*
 
 data class OrderItemDto(
     var id: UUID? = null,
-    var product: tech.challenge.fastfood.fastfood.common.dtos.ProductDto? = null,
+    var product: ProductDto? = null,
     var orderId: UUID? = null,
     var quantity: Int? = null,
     var createdAt: OffsetDateTime? = null,

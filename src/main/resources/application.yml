@@ -5,9 +5,9 @@ spring:
   application:
     name: fastfood
   datasource:
-    url: ${POSTGRES_DOCKER}
-    username: admin
-    password: admin
+    url: jdbc:postgresql://${DATABASE_HOST:postgres}:${DATABASE_PORT}/${DATABASE}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
