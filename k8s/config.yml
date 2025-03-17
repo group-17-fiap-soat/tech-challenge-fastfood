@@ -66,7 +66,8 @@ spec:
   selector:
     app: fastfood-app
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 80
       targetPort: 8080
 
@@ -89,3 +90,73 @@ spec:
                 name: fastfood-service
                 port:
                   number: 80
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: fastfood-app
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: fastfood-app
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metrics-server
+  namespace: kube-system
+  labels:
+    k8s-app: metrics-server
+spec:
+  selector:
+    matchLabels:
+      k8s-app: metrics-server
+  template:
+    metadata:
+      name: metrics-server
+      labels:
+        k8s-app: metrics-server
+    spec:
+      serviceAccountName: metrics-server
+      volumes:
+        # mount in tmp so we can safely use from-scratch images and/or read-only containers
+        - name: tmp-dir
+          emptyDir: {}
+      hostNetwork: true
+      containers:
+        - name: metrics-server
+          image: k8s.gcr.io/metrics-server/metrics-server:v0.3.7
+          imagePullPolicy: IfNotPresent
+          args:
+            - /metrics-server
+            - --cert-dir=/tmp
+            - --secure-port=4443
+            - --kubelet-preferred-address-types=InternalIP
+            - --kubelet-use-node-status-port
+            - --kubelet-insecure-tls
+          ports:
+            - name: main-port
+              containerPort: 4443
+              protocol: TCP
+          securityContext:
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1000
+          volumeMounts:
+            - name: tmp-dir
+              mountPath: /tmp
+      nodeSelector:
+        kubernetes.io/os: linux
