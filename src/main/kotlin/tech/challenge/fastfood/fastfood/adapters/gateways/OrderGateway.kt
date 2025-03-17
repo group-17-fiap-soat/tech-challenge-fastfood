@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component
 import tech.challenge.fastfood.fastfood.adapters.presenters.OrderMapper
 import tech.challenge.fastfood.fastfood.common.daos.OrderDAO
 import tech.challenge.fastfood.fastfood.common.dtos.OrderDto
+import tech.challenge.fastfood.fastfood.common.enums.OrderStatusEnum
 import tech.challenge.fastfood.fastfood.common.interfaces.datasource.OrderDataSource
 import tech.challenge.fastfood.fastfood.common.interfaces.gateway.OrderGatewayInterface
 import java.util.*
@@ -23,7 +24,7 @@ class OrderGateway(
 
     override fun save(entity: OrderDto): OrderDAO {
         val orderEntity = OrderMapper.toEntity(entity)
-            .copy(status = tech.challenge.fastfood.fastfood.common.enums.OrderStatusEnum.RECEIVED)
+            .copy(status = OrderStatusEnum.RECEIVED)
 
         return orderDataSource.save(orderEntity)
     }

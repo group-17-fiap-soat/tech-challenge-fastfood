@@ -43,7 +43,7 @@ class OrderController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     override fun createOrder(
-        @RequestBody request: tech.challenge.fastfood.fastfood.common.dtos.request.CreateOrderRequestV1
+        @RequestBody request: CreateOrderRequestV1
     ): ResponseEntity<OrderResponseV1> {
         val order = OrderMapper.createOrderRequestToDto(request)
         val createdOrder = createOrderUseCase.execute(order)

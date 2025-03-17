@@ -1,11 +1,11 @@
 package tech.challenge.fastfood.fastfood.adapters.presenters
 
-import tech.challenge.fastfood.fastfood.common.dtos.ProductDto
 import tech.challenge.fastfood.fastfood.common.daos.ProductDAO
-import tech.challenge.fastfood.fastfood.common.enums.CategoryEnum
+import tech.challenge.fastfood.fastfood.common.dtos.ProductDto
 import tech.challenge.fastfood.fastfood.common.dtos.request.CreateProductRequestV1
 import tech.challenge.fastfood.fastfood.common.dtos.request.UpdateProductRequestV1
 import tech.challenge.fastfood.fastfood.common.dtos.response.ProductResponseV1
+import tech.challenge.fastfood.fastfood.common.enums.CategoryEnum
 
 object ProductMapper {
     fun toDto(entity: ProductDAO) =
@@ -14,7 +14,7 @@ object ProductMapper {
             name = entity.name,
             description = entity.description,
             price = entity.price,
-            category = tech.challenge.fastfood.fastfood.common.enums.CategoryEnum.valueOf(entity.category!!),
+            category = CategoryEnum.valueOf(entity.category!!),
             imageUrl = entity.imageUrl,
             createdAt = entity.createdAt,
             updatedAt = entity.updatedAt

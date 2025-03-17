@@ -8,7 +8,7 @@ data class Order(
     val id: UUID? = null,
     var orderNumber: Long? = null,
     val customerId: UUID? = null,
-    val status: tech.challenge.fastfood.fastfood.common.enums.OrderStatusEnum? = null,
+    val status: OrderStatusEnum? = null,
     val orderDate: OffsetDateTime? = null,
     val finishedDate: OffsetDateTime? = null,
     var createdAt: OffsetDateTime? = null,

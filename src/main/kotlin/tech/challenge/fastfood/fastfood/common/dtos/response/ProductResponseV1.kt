@@ -9,6 +9,6 @@ data class ProductResponseV1(
     val name: String,
     val description: String?,
     val price: BigDecimal,
-    val category: tech.challenge.fastfood.fastfood.common.enums.CategoryEnum,
+    val category: CategoryEnum,
     val imageUrl: String?
 )
