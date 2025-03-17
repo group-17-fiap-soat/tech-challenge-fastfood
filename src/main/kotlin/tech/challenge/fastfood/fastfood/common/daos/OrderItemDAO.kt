@@ -15,7 +15,7 @@ data class OrderItemDAO (
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
-    val product: tech.challenge.fastfood.fastfood.common.daos.ProductDAO? = null,
+    val product: ProductDAO? = null,
 
     @Column(nullable = false)
     var quantity: Int? = null,

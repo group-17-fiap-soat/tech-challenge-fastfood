@@ -24,7 +24,7 @@ data class OrderDAO(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    val status: tech.challenge.fastfood.fastfood.common.enums.OrderStatusEnum? = null,
+    val status: OrderStatusEnum? = null,
 
     @CreationTimestamp
     @Column(name = "order_date")
