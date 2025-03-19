@@ -7,8 +7,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import tech.challenge.fastfood.fastfood.common.dtos.request.ChangeOrderStatusRequestV1
 import tech.challenge.fastfood.fastfood.common.dtos.request.CreateOrderRequestV1
 import tech.challenge.fastfood.fastfood.common.dtos.response.OrderResponseV1
+import tech.challenge.fastfood.fastfood.entities.Order
 import java.util.*
 
 interface OrderOperation {
@@ -68,5 +70,15 @@ interface OrderOperation {
     )
     fun createOrder(
         @RequestBody request: CreateOrderRequestV1
+    ): ResponseEntity<OrderResponseV1>
+
+
+    @Operation(
+        summary = "Atualiza o status de um pedido pelo id",
+        description = "Caso não receba um status, atualiza para o próximo em ordem, caso contrário, atualiza para o status desejado."
+    )
+    fun putOrderStatus(
+        @PathVariable orderId: UUID,
+        @RequestBody request: ChangeOrderStatusRequestV1?
     ): ResponseEntity<OrderResponseV1>
 }

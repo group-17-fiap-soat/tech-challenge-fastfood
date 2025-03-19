@@ -14,7 +14,7 @@ class ListOrderUseCase(
 
     fun execute(): List<OrderDto> {
         val orders = orderGatewayInterface.findAll()
-            .filter { it.status != OrderStatusEnum.FINISHED }
+            .filter { it.status != OrderStatusEnum.FINISHED && it.status != null }
             .sortedWith(compareBy<OrderDAO> { it.status?.priority }
                 .thenBy { it.createdAt })
         return orders.map(OrderMapper::toDto)
