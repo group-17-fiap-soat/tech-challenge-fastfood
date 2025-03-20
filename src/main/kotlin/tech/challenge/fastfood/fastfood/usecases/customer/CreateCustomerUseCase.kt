@@ -1,20 +1,19 @@
 package tech.challenge.fastfood.fastfood.usecases.customer
 
 import org.springframework.stereotype.Service
-import tech.challenge.fastfood.fastfood.adapters.presenters.CustomerMapper
-import tech.challenge.fastfood.fastfood.common.dtos.CustomerDto
 import tech.challenge.fastfood.fastfood.common.exception.InvalidCustomerDataException
 import tech.challenge.fastfood.fastfood.common.interfaces.gateway.CustomerGatewayInterface
 import tech.challenge.fastfood.fastfood.common.utils.Validator
+import tech.challenge.fastfood.fastfood.entities.Customer
 
 @Service
 class CreateCustomerUseCase(
     private val customerGatewayInterface: CustomerGatewayInterface
 ) {
-    fun execute(customerDto: CustomerDto): CustomerDto {
-        val customer = validateCustomer(customerDto)
+    fun execute(customer: Customer): Customer {
+        validateCustomer(customer)
 
-        return CustomerMapper.toDto(customerGatewayInterface.save(customer))
+        return customerGatewayInterface.save(customer)
     }
 
     private fun isCpfAlreadyRegistered(cpf: String): Boolean {
@@ -25,11 +24,11 @@ class CreateCustomerUseCase(
         return customerGatewayInterface.findByEmail(email) != null
     }
 
-    private fun validateCustomer(customerDto: CustomerDto): CustomerDto {
-        val cpf = checkNotNull(customerDto.cpf) {
+    private fun validateCustomer(customer: Customer) {
+        val cpf = checkNotNull(customer.cpf) {
             throw InvalidCustomerDataException("CPF tem que ser preenchido.")
         }
-        if (customerDto.email!= null && !Validator.isValidEmail(customerDto.email))
+        if (customer.email!= null && !Validator.isValidEmail(customer.email))
             throw InvalidCustomerDataException("Email inválido.")
 
         if (!Validator.isValidCpf(cpf))
@@ -38,9 +37,7 @@ class CreateCustomerUseCase(
         if (isCpfAlreadyRegistered(cpf))
             throw InvalidCustomerDataException("CPF já cadastrado.")
 
-        if (isEmailAlreadyRegistered(customerDto.email!!))
+        if (isEmailAlreadyRegistered(customer.email!!))
             throw InvalidCustomerDataException("Email já cadastrado.")
-
-        return customerDto
     }
 }

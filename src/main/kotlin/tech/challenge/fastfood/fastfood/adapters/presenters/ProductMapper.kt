@@ -1,63 +1,75 @@
 package tech.challenge.fastfood.fastfood.adapters.presenters
 
 import tech.challenge.fastfood.fastfood.common.daos.ProductDAO
-import tech.challenge.fastfood.fastfood.common.dtos.ProductDto
 import tech.challenge.fastfood.fastfood.common.dtos.request.CreateProductRequestV1
 import tech.challenge.fastfood.fastfood.common.dtos.request.UpdateProductRequestV1
 import tech.challenge.fastfood.fastfood.common.dtos.response.ProductResponseV1
 import tech.challenge.fastfood.fastfood.common.enums.CategoryEnum
+import tech.challenge.fastfood.fastfood.entities.Product
 
 object ProductMapper {
-    fun toDto(entity: ProductDAO) =
-        ProductDto(
+    fun toDao(entity: ProductDAO) =
+        ProductDAO(
             id = entity.id,
             name = entity.name,
             description = entity.description,
             price = entity.price,
-            category = CategoryEnum.valueOf(entity.category!!),
+            category = CategoryEnum.valueOf(entity.category!!).name,
             imageUrl = entity.imageUrl,
             createdAt = entity.createdAt,
             updatedAt = entity.updatedAt
         )
 
-    fun toEntity(dto: ProductDto) =
-        ProductDAO(
-            id = dto.id,
-            name = dto.name,
-            description = dto.description,
-            price = dto.price,
-            category = dto.category.toString(),
-            imageUrl = dto.imageUrl,
-            createdAt = dto.createdAt,
-            updatedAt = dto.updatedAt
+    fun toEntity(dao: ProductDAO) =
+        Product(
+            id = dao.id,
+            name = dao.name,
+            description = dao.description,
+            price = dao.price,
+            category = dao.category.toString(),
+            imageUrl = dao.imageUrl,
+            createdAt = dao.createdAt,
+            updatedAt = dao.updatedAt
         )
 
-    fun createProductRequestToDto(requestV1: CreateProductRequestV1) =
-        ProductDto(
+    fun toDao(entity: Product) =
+        ProductDAO(
+            id = entity.id,
+            name = entity.name,
+            description = entity.description,
+            price = entity.price,
+            category = entity.category.toString(),
+            imageUrl = entity.imageUrl,
+            createdAt = entity.createdAt,
+            updatedAt = entity.updatedAt
+        )
+
+    fun fromRequestToEntity(requestV1: CreateProductRequestV1) =
+        Product(
             name = requestV1.name,
             description = requestV1.description,
             price = requestV1.price,
-            category = requestV1.category,
+            category = requestV1.category.toString(),
             imageUrl = requestV1.imageUrl
         )
 
-    fun updateProductRequestToDto(requestV1: UpdateProductRequestV1) =
-        ProductDto(
+    fun fromRquestToEntity(requestV1: UpdateProductRequestV1) =
+        Product(
             id = requestV1.id,
             name = requestV1.name,
             description = requestV1.description,
             price = requestV1.price,
-            category = requestV1.category,
+            category = requestV1.category.toString(),
             imageUrl = requestV1.imageUrl
         )
 
-    fun toProductResponseV1(productDto: ProductDto) =
+    fun toProductResponseV1(entity: Product) =
         ProductResponseV1(
-            id = productDto.id,
-            name = productDto.name!!,
-            description = productDto.description,
-            price = productDto.price!!,
-            category = productDto.category!!,
-            imageUrl = productDto.imageUrl
+            id = entity.id,
+            name = entity.name!!,
+            description = entity.description,
+            price = entity.price!!,
+            category = CategoryEnum.valueOf(entity.category!!),
+            imageUrl = entity.imageUrl
         )
 }

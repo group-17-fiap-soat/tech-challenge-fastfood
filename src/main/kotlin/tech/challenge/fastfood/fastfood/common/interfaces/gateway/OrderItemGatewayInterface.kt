@@ -1,11 +1,10 @@
 package tech.challenge.fastfood.fastfood.common.interfaces.gateway
 
-import tech.challenge.fastfood.fastfood.common.daos.OrderItemDAO
-import tech.challenge.fastfood.fastfood.common.dtos.OrderItemDto
+import tech.challenge.fastfood.fastfood.entities.OrderItem
 import java.util.*
 
 interface OrderItemGatewayInterface {
-    fun save(entity: OrderItemDto): OrderItemDAO
-    fun saveAll(entityList: List<OrderItemDto>): List<OrderItemDAO>
-    fun findAllByOrderId(id: UUID): List<OrderItemDAO>
+    fun save(entity: OrderItem): OrderItem
+    fun saveAll(entityList: List<OrderItem>): List<OrderItem>
+    fun findAllByOrderId(id: UUID): List<OrderItem>
 }
