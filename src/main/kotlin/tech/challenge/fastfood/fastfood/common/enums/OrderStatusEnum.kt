@@ -1,8 +1,12 @@
 package tech.challenge.fastfood.fastfood.common.enums
 
-enum class OrderStatusEnum(val priority: Int) {
+enum class OrderStatusEnum(val priority: Int?) {
     READY(1),
     IN_PROGRESS(2),
     RECEIVED(3),
-    FINISHED(4)
+    FINISHED(0),
+    PAYMENT_APPROVED(null),
+    PAYMENT_PENDING(null),
+    PAYMENT_ERROR(null)
+
 }
