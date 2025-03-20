@@ -14,13 +14,17 @@ data class Order(
     val finishedDate: OffsetDateTime? = null,
     var createdAt: OffsetDateTime? = null,
     var updatedAt: OffsetDateTime? = null,
-    val orderItems: List<OrderItem> = listOf(),
-    val totalPrice: BigDecimal = calculateTotalPrice(orderItems)
-)
+    val orderItems: List<OrderItem> = listOf()
+){
+    val totalPrice: BigDecimal
+        get() = calculateTotalPrice()
 
-fun calculateTotalPrice(orderItems: List<OrderItem>): BigDecimal {
-    return orderItems.fold(BigDecimal.ZERO) { acc, item ->
-        acc + item.product?.price!!.multiply(item.quantity?.toBigDecimal())
+    private fun calculateTotalPrice(): BigDecimal {
+        return orderItems.fold(BigDecimal.ZERO) { acc, item ->
+            val itemPrice = item.product?.price ?: BigDecimal.ZERO
+            val quantity = item.quantity?.toBigDecimal() ?: BigDecimal.ONE
+            acc + itemPrice.multiply(quantity)
+        }
     }
 }
 

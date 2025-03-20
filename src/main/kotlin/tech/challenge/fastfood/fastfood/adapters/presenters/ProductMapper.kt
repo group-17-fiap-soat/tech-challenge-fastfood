@@ -8,17 +8,6 @@ import tech.challenge.fastfood.fastfood.common.enums.CategoryEnum
 import tech.challenge.fastfood.fastfood.entities.Product
 
 object ProductMapper {
-    fun toDao(entity: ProductDAO) =
-        ProductDAO(
-            id = entity.id,
-            name = entity.name,
-            description = entity.description,
-            price = entity.price,
-            category = CategoryEnum.valueOf(entity.category!!).name,
-            imageUrl = entity.imageUrl,
-            createdAt = entity.createdAt,
-            updatedAt = entity.updatedAt
-        )
 
     fun toEntity(dao: ProductDAO) =
         Product(
