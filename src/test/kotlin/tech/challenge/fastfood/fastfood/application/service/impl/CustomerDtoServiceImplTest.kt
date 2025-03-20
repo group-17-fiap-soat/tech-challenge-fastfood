@@ -15,7 +15,7 @@ import tech.challenge.fastfood.fastfood.usecases.customer.GetCustomerByCpfUseCas
 import tech.challenge.fastfood.fastfood.usecases.customer.GetCustomerByIdUseCase
 import java.util.*
 
-class CustomerServiceImplTest {
+class CustomerDtoServiceImplTest {
 
     private lateinit var customerGatewayInterface: CustomerGatewayInterface
     private lateinit var createCustomerUseCase: CreateCustomerUseCase

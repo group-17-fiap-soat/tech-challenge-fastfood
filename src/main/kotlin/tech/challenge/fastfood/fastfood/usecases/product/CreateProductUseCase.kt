@@ -3,14 +3,14 @@ package tech.challenge.fastfood.fastfood.usecases.product
 import org.springframework.stereotype.Service
 import tech.challenge.fastfood.fastfood.common.dtos.ProductDto
 import tech.challenge.fastfood.fastfood.common.interfaces.gateway.ProductGatewayInterface
-import tech.challenge.fastfood.fastfood.adapters.presenters.ProductMapper
+import tech.challenge.fastfood.fastfood.entities.Product
 
 @Service
 class CreateProductUseCase(
     private val productGatewayInterface: ProductGatewayInterface
 ) {
 
-    fun execute(productDto: ProductDto): ProductDto {
-        return ProductMapper.toDto(productGatewayInterface.save(productDto))
+    fun execute(product: Product): Product {
+        return productGatewayInterface.save(product)
     }
 }

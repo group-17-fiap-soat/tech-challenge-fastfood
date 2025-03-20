@@ -4,11 +4,11 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import tech.challenge.fastfood.fastfood.adapters.controllers.operation.CustomerOperation
+import tech.challenge.fastfood.fastfood.adapters.presenters.CustomerMapper
 import tech.challenge.fastfood.fastfood.common.dtos.request.AuthCustomerRequestV1
 import tech.challenge.fastfood.fastfood.common.dtos.request.CreateCustomerRequestV1
 import tech.challenge.fastfood.fastfood.common.dtos.response.CustomerResponseV1
 import tech.challenge.fastfood.fastfood.common.exception.InvalidCustomerDataException
-import tech.challenge.fastfood.fastfood.adapters.presenters.CustomerMapper
 import tech.challenge.fastfood.fastfood.usecases.customer.CreateCustomerUseCase
 import tech.challenge.fastfood.fastfood.usecases.customer.GetCustomerByCpfUseCase
 import tech.challenge.fastfood.fastfood.usecases.customer.GetCustomerByIdUseCase
@@ -28,7 +28,7 @@ class CustomerController(
     override fun createCustomer(
         @RequestBody request: CreateCustomerRequestV1
     ): ResponseEntity<CustomerResponseV1> {
-        val customer = CustomerMapper.createCustomerRequestToDto(request)
+        val customer = CustomerMapper.fromRequestToEntity(request)
         val createdCustomer = createCustomerUseCase.execute(customer)
         val response = CustomerMapper.toCustomerResponseV1(createdCustomer)
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
