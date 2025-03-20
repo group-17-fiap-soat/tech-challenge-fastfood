@@ -1,43 +1,42 @@
 package tech.challenge.fastfood.fastfood.adapters.presenters
 
 import tech.challenge.fastfood.fastfood.common.daos.CustomerDAO
-import tech.challenge.fastfood.fastfood.common.dtos.CustomerDto
 import tech.challenge.fastfood.fastfood.common.dtos.request.CreateCustomerRequestV1
 import tech.challenge.fastfood.fastfood.common.dtos.response.CustomerResponseV1
+import tech.challenge.fastfood.fastfood.entities.Customer
 
 object CustomerMapper {
-    fun toDto(entity: CustomerDAO?) =
-        CustomerDto(
-            id = entity?.id,
-            cpf = entity?.cpf,
-            name = entity?.name,
-            email = entity?.email,
-            createdAt = entity?.createdAt,
-            updatedAt = entity?.updatedAt
+    fun fromDaoToEntity(dao: CustomerDAO?) = Customer(
+            id = dao?.id,
+            cpf = dao?.cpf,
+            name = dao?.name,
+            email = dao?.email,
+            createdAt = dao?.createdAt,
+            updatedAt = dao?.updatedAt
         )
 
-    fun createCustomerRequestToDto(requestV1: CreateCustomerRequestV1?) =
-        CustomerDto(
+    fun fromRequestToEntity(requestV1: CreateCustomerRequestV1?) =
+        Customer(
             cpf = requestV1?.cpf,
             name = requestV1?.name,
             email = requestV1?.email
         )
 
-    fun toEntity(dto: CustomerDto?) =
+    fun toDAO(entity: Customer) =
         CustomerDAO(
-            id = dto?.id,
-            cpf = dto?.cpf,
-            name = dto?.name,
-            email = dto?.email,
-            createdAt = dto?.createdAt,
-            updatedAt = dto?.updatedAt
+            id = entity.id,
+            cpf = entity.cpf,
+            name = entity.name,
+            email = entity.email,
+            createdAt = entity.createdAt,
+            updatedAt = entity.updatedAt
         )
 
-    fun toCustomerResponseV1(dto: CustomerDto?) =
+    fun toCustomerResponseV1(entity: Customer) =
         CustomerResponseV1(
-            id = dto?.id,
-            cpf = dto?.cpf,
-            name = dto?.name,
-            email = dto?.email
+            id = entity.id,
+            cpf = entity.cpf,
+            name = entity.name,
+            email = entity.email
         )
 }

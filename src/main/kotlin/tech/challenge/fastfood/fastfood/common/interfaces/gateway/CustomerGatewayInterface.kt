@@ -1,12 +1,11 @@
 package tech.challenge.fastfood.fastfood.common.interfaces.gateway;
 
-import tech.challenge.fastfood.fastfood.common.dtos.CustomerDto
-import tech.challenge.fastfood.fastfood.common.daos.CustomerDAO
+import tech.challenge.fastfood.fastfood.entities.Customer
 import java.util.*
 
 interface CustomerGatewayInterface {
-    fun save(entity: CustomerDto): CustomerDAO
-    fun findByCpf(cpf: String): CustomerDAO?
-    fun findByEmail(email: String): CustomerDAO?
-    fun findById(id: UUID): CustomerDAO?
+    fun save(entity: Customer): Customer
+    fun findByCpf(cpf: String): Customer?
+    fun findByEmail(email: String): Customer?
+    fun findById(id: UUID): Customer?
 }
