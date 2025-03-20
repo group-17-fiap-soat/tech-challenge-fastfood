@@ -12,7 +12,7 @@ class ListOrderUseCase(
 
     fun execute(): List<Order> {
         val orders = orderGatewayInterface.findAll()
-            .filter { it.status != OrderStatusEnum.FINISHED && it.status?.priority != null }
+            .filter { it.status != OrderStatusEnum.FINISHED }
             .sortedWith(compareBy<Order> { it.status?.priority }
                 .thenBy { it.createdAt })
         return orders

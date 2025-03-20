@@ -1,8 +1,8 @@
 package tech.challenge.fastfood.fastfood.adapters.presenters
 
-import tech.challenge.fastfood.fastfood.common.daos.CustomerDAO
-import tech.challenge.fastfood.fastfood.common.dtos.request.CreateCustomerRequestV1
-import tech.challenge.fastfood.fastfood.common.dtos.response.CustomerResponseV1
+import tech.challenge.fastfood.fastfood.common.dao.CustomerDAO
+import tech.challenge.fastfood.fastfood.common.dto.request.CreateCustomerRequestV1
+import tech.challenge.fastfood.fastfood.common.dto.response.CustomerResponseV1
 import tech.challenge.fastfood.fastfood.entities.Customer
 
 object CustomerMapper {

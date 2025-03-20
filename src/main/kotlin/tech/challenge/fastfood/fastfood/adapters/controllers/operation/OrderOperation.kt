@@ -7,10 +7,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import tech.challenge.fastfood.fastfood.common.dtos.request.ChangeOrderStatusRequestV1
-import tech.challenge.fastfood.fastfood.common.dtos.request.CreateOrderRequestV1
-import tech.challenge.fastfood.fastfood.common.dtos.response.OrderResponseV1
-import tech.challenge.fastfood.fastfood.entities.Order
+import tech.challenge.fastfood.fastfood.common.dto.request.ChangeOrderStatusRequestV1
+import tech.challenge.fastfood.fastfood.common.dto.request.CreateOrderRequestV1
+import tech.challenge.fastfood.fastfood.common.dto.response.OrderResponseV1
 import java.util.*
 
 interface OrderOperation {

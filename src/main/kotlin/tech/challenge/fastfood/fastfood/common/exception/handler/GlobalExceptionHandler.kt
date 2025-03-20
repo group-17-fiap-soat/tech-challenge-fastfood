@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
-import tech.challenge.fastfood.fastfood.common.dtos.response.ErrorResponseV1
+import tech.challenge.fastfood.fastfood.common.dto.response.ErrorResponseV1
 import tech.challenge.fastfood.fastfood.common.exception.InvalidCustomerDataException
 
 @ControllerAdvice

@@ -1,4 +1,4 @@
-package tech.challenge.fastfood.fastfood.common.dtos.response
+package tech.challenge.fastfood.fastfood.common.dto.response
 
 import java.util.UUID
 

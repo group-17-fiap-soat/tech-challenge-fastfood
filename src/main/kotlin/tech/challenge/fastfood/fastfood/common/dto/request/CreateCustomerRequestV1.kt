@@ -1,4 +1,4 @@
-package tech.challenge.fastfood.fastfood.common.dtos.request
+package tech.challenge.fastfood.fastfood.common.dto.request
 
 data class CreateCustomerRequestV1(
     val cpf: String? = null,

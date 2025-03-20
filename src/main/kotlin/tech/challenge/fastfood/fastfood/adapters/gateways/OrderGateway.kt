@@ -2,7 +2,6 @@ package tech.challenge.fastfood.fastfood.adapters.gateways
 
 import org.springframework.stereotype.Component
 import tech.challenge.fastfood.fastfood.adapters.presenters.OrderMapper
-import tech.challenge.fastfood.fastfood.common.daos.OrderDAO
 import tech.challenge.fastfood.fastfood.common.enums.OrderStatusEnum
 import tech.challenge.fastfood.fastfood.common.interfaces.datasource.OrderDataSource
 import tech.challenge.fastfood.fastfood.common.interfaces.gateway.OrderGatewayInterface

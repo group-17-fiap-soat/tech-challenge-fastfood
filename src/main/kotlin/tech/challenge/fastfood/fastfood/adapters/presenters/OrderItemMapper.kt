@@ -1,8 +1,8 @@
 package tech.challenge.fastfood.fastfood.adapters.presenters
 
-import tech.challenge.fastfood.fastfood.common.daos.OrderItemDAO
-import tech.challenge.fastfood.fastfood.common.dtos.request.CreateOrderItemRequestV1
-import tech.challenge.fastfood.fastfood.common.dtos.response.OrderItemResponseV1
+import tech.challenge.fastfood.fastfood.common.dao.OrderItemDAO
+import tech.challenge.fastfood.fastfood.common.dto.request.CreateOrderItemRequestV1
+import tech.challenge.fastfood.fastfood.common.dto.response.OrderItemResponseV1
 import tech.challenge.fastfood.fastfood.common.enums.CategoryEnum
 import tech.challenge.fastfood.fastfood.entities.OrderItem
 import tech.challenge.fastfood.fastfood.entities.Product

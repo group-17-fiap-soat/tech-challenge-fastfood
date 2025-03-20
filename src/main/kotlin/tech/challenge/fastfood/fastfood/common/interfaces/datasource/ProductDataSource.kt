@@ -3,7 +3,7 @@ package tech.challenge.fastfood.fastfood.common.interfaces.datasource
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
-import tech.challenge.fastfood.fastfood.common.daos.ProductDAO
+import tech.challenge.fastfood.fastfood.common.dao.ProductDAO
 import java.util.*
 
 @Repository

@@ -7,11 +7,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.http.ResponseEntity
 import tech.challenge.fastfood.fastfood.common.enums.CategoryEnum
-import tech.challenge.fastfood.fastfood.common.dtos.request.CreateProductRequestV1
-import tech.challenge.fastfood.fastfood.common.dtos.request.UpdateProductRequestV1
-import tech.challenge.fastfood.fastfood.common.dtos.response.CustomerResponseV1
-import tech.challenge.fastfood.fastfood.common.dtos.response.ErrorResponseV1
-import tech.challenge.fastfood.fastfood.common.dtos.response.ProductResponseV1
+import tech.challenge.fastfood.fastfood.common.dto.request.CreateProductRequestV1
+import tech.challenge.fastfood.fastfood.common.dto.request.UpdateProductRequestV1
+import tech.challenge.fastfood.fastfood.common.dto.response.CustomerResponseV1
+import tech.challenge.fastfood.fastfood.common.dto.response.ErrorResponseV1
+import tech.challenge.fastfood.fastfood.common.dto.response.ProductResponseV1
 
 interface ProductOperation {
 
