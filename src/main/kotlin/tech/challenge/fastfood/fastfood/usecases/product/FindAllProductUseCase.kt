@@ -1,7 +1,6 @@
 package tech.challenge.fastfood.fastfood.usecases.product
 
 import org.springframework.stereotype.Service
-import tech.challenge.fastfood.fastfood.common.dtos.ProductDto
 import tech.challenge.fastfood.fastfood.common.interfaces.gateway.ProductGatewayInterface
 import tech.challenge.fastfood.fastfood.entities.Product
 

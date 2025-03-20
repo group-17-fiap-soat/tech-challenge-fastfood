@@ -1,24 +1,11 @@
 package tech.challenge.fastfood.fastfood.adapters.presenters
 
 import tech.challenge.fastfood.fastfood.common.daos.OrderDAO
-import tech.challenge.fastfood.fastfood.common.dtos.OrderDto
 import tech.challenge.fastfood.fastfood.common.dtos.request.CreateOrderRequestV1
 import tech.challenge.fastfood.fastfood.common.dtos.response.OrderResponseV1
 import tech.challenge.fastfood.fastfood.entities.Order
 
 object OrderMapper {
-    fun toDto(entity: OrderDAO) =
-        OrderDto(
-            id = entity.id,
-            orderNumber = entity.orderNumber,
-            customerId = entity.customerId,
-            status = entity.status,
-            orderDate = entity.orderDate,
-            finishedAt = entity.finishedDate,
-            createdAt = entity.createdAt,
-            updatedAt = entity.updatedAt
-        )
-
 
     fun requestToEntity(requestV1: CreateOrderRequestV1) =
         Order(
