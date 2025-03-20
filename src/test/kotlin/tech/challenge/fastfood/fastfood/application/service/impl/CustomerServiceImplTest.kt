@@ -6,10 +6,9 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.*
-import tech.challenge.fastfood.fastfood.adapters.presenters.CustomerMapper
-import tech.challenge.fastfood.fastfood.common.dtos.CustomerDto
 import tech.challenge.fastfood.fastfood.common.exception.InvalidCustomerDataException
 import tech.challenge.fastfood.fastfood.common.interfaces.gateway.CustomerGatewayInterface
+import tech.challenge.fastfood.fastfood.entities.Customer
 import tech.challenge.fastfood.fastfood.usecases.customer.CreateCustomerUseCase
 import tech.challenge.fastfood.fastfood.usecases.customer.GetCustomerByCpfUseCase
 import tech.challenge.fastfood.fastfood.usecases.customer.GetCustomerByIdUseCase
@@ -32,35 +31,34 @@ class CustomerServiceImplTest {
 
     @Test
     fun `createCustomer - sucesso`() {
-        val customerDto = CustomerDto(
+        val customer = Customer(
             cpf = "12345678901",
             name = "João",
             email = "joao@example.com"
         )
-        val savedEntity = CustomerMapper.toEntity(customerDto)
 
-        `when`(customerGatewayInterface.save(customerDto)).thenReturn(savedEntity)
+        `when`(customerGatewayInterface.save(customer)).thenReturn(customer)
         `when`(customerGatewayInterface.findByCpf("12345678901")).thenReturn(null)
         `when`(customerGatewayInterface.findByEmail("joao@example.com")).thenReturn(null)
 
-        val result = createCustomerUseCase.execute(customerDto)
+        val result = createCustomerUseCase.execute(customer)
 
-        assertEquals(customerDto.cpf, result.cpf)
-        assertEquals(customerDto.name, result.name)
-        assertEquals(customerDto.email, result.email)
-        verify(customerGatewayInterface).save(customerDto)
+        assertEquals(customer.cpf, result.cpf)
+        assertEquals(customer.name, result.name)
+        assertEquals(customer.email, result.email)
+        verify(customerGatewayInterface).save(customer)
     }
 
     @Test
     fun `createCustomer - falha CPF ausente`() {
-        val customerDto = CustomerDto(
+        val customer = Customer(
             cpf = null,
             name = "João",
             email = "joao@example.com"
         )
 
         val exception = assertThrows<InvalidCustomerDataException> {
-            createCustomerUseCase.execute(customerDto)
+            createCustomerUseCase.execute(customer)
         }
 
         assertEquals("CPF tem que ser preenchido.", exception.message)
@@ -68,14 +66,14 @@ class CustomerServiceImplTest {
 
     @Test
     fun `createCustomer - falha CPF inválido`() {
-        val customerDto = CustomerDto(
+        val customer = Customer(
             cpf = "12345",
             name = "João",
             email = "joao@example.com"
         )
 
         val exception = assertThrows<InvalidCustomerDataException> {
-            createCustomerUseCase.execute(customerDto)
+            createCustomerUseCase.execute(customer)
         }
 
         assertEquals("CPF inválido.", exception.message)
@@ -83,16 +81,16 @@ class CustomerServiceImplTest {
 
     @Test
     fun `createCustomer - falha CPF já cadastrado`() {
-        val customerDto = CustomerDto(
+        val customer = Customer(
             cpf = "12345678901",
             name = "João",
             email = "joao@example.com"
         )
 
-        `when`(customerGatewayInterface.findByCpf("12345678901")).thenReturn(CustomerMapper.toEntity(customerDto))
+        `when`(customerGatewayInterface.findByCpf("12345678901")).thenReturn(customer)
 
         val exception = assertThrows<InvalidCustomerDataException> {
-            createCustomerUseCase.execute(customerDto)
+            createCustomerUseCase.execute(customer)
         }
 
         assertEquals("CPF já cadastrado.", exception.message)
@@ -100,16 +98,16 @@ class CustomerServiceImplTest {
 
     @Test
     fun `createCustomer - falha Email já cadastrado`() {
-        val customerDto = CustomerDto(
+        val customer = Customer(
             cpf = "12345678901",
             name = "João",
             email = "joao@example.com"
         )
 
-        `when`(customerGatewayInterface.findByEmail("joao@example.com")).thenReturn(CustomerMapper.toEntity(customerDto))
+        `when`(customerGatewayInterface.findByEmail("joao@example.com")).thenReturn(customer)
 
         val exception = assertThrows<InvalidCustomerDataException> {
-            createCustomerUseCase.execute(customerDto)
+            createCustomerUseCase.execute(customer)
         }
 
         assertEquals("Email já cadastrado.", exception.message)
@@ -117,19 +115,19 @@ class CustomerServiceImplTest {
 
     @Test
     fun `getCustomerByCpf - sucesso`() {
-        val customerDto = CustomerDto(
+        val customer = Customer(
             cpf = "12345678901",
             name = "João",
             email = "joao@example.com"
         )
 
-        `when`(customerGatewayInterface.findByCpf("12345678901")).thenReturn(CustomerMapper.toEntity(customerDto))
+        `when`(customerGatewayInterface.findByCpf("12345678901")).thenReturn(customer)
 
         val result = getCustomerByCpfUseCase.execute("12345678901")
 
-        assertEquals(customerDto.cpf, result?.cpf)
-        assertEquals(customerDto.name, result?.name)
-        assertEquals(customerDto.email, result?.email)
+        assertEquals(customer.cpf, result?.cpf)
+        assertEquals(customer.name, result?.name)
+        assertEquals(customer.email, result?.email)
     }
 
     @Test
@@ -152,20 +150,20 @@ class CustomerServiceImplTest {
 
     @Test
     fun `getCustomerById - sucesso`() {
-        val customerDto = CustomerDto(
+        val customer = Customer(
             cpf = "12345678901",
             name = "João",
             email = "joao@example.com"
         )
         val customerId = UUID.randomUUID()
 
-        `when`(customerGatewayInterface.findById(customerId)).thenReturn(CustomerMapper.toEntity(customerDto))
+        `when`(customerGatewayInterface.findById(customerId)).thenReturn(customer)
 
         val result = getCustomerByIdUseCase.execute(customerId)
 
-        assertEquals(customerDto.cpf, result?.cpf)
-        assertEquals(customerDto.name, result?.name)
-        assertEquals(customerDto.email, result?.email)
+        assertEquals(customer.cpf, result?.cpf)
+        assertEquals(customer.name, result?.name)
+        assertEquals(customer.email, result?.email)
     }
 
     @Test

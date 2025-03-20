@@ -48,7 +48,7 @@ class OrderController(
     override fun createOrder(
         @RequestBody request: CreateOrderRequestV1
     ): ResponseEntity<OrderResponseV1> {
-        val order = OrderMapper.createOrderRequestToDto(request)
+        val order = OrderMapper.requestToEntity(request)
         val createdOrder = createOrderUseCase.execute(order)
         val response = OrderMapper.toOrderResponseV1(createdOrder)
         return ResponseEntity.status(HttpStatus.CREATED).body(response)

@@ -29,7 +29,7 @@ class ProductController(
     override fun createProduct(
         @RequestBody request: CreateProductRequestV1
     ): ResponseEntity<ProductResponseV1> {
-        val product = ProductMapper.createProductRequestToDto(request)
+        val product = ProductMapper.fromRequestToEntity(request)
         val response = createProductUseCase.execute(product).let(ProductMapper::toProductResponseV1)
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -39,7 +39,7 @@ class ProductController(
     override fun putProduct(
         @RequestBody request: UpdateProductRequestV1
     ): ResponseEntity<ProductResponseV1> {
-        val product = ProductMapper.updateProductRequestToDto(request)
+        val product = ProductMapper.fromRquestToEntity(request)
         val response = putProductUseCase.execute(product).let(ProductMapper::toProductResponseV1)
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

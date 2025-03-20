@@ -52,29 +52,13 @@ a `.env` file by copying the structure provided in `.env.sample`.
 
 4. **Start the Database with Docker Compose**
 
-   Let Docker Compose do the heavy lifting. Fire up PostgreSQL with:
+   Let Docker Compose do the heavy lifting. Fire up PostgreSQL and the application with:
 
     ```bash
     docker-compose up --build -d
     ```
 
-5. **Build the Application Docker Image**
-
-   To build the application Docker image, run the following command:
-
-    ```bash
-    docker build -t fastfood-app .
-    ```
-
-6. **Run the Application Docker Container**
-
-   Once the image is built, run the Spring Boot application in a container:
-
-    ```bash
-    docker run -p 8080:8080 --env-file .env --network fastfood-network fastfood-app
-    ```
-
-7. **Check Your Connection**
+5. **Check Your Connection**
 
    PostgreSQL should now be serving up data at `localhost:${DATABASE_PORT}`. Use the credentials in your `.env` to
    connect. The FastFood application will be accessible at `http://localhost:8080`.

@@ -1,48 +1,47 @@
 package tech.challenge.fastfood.fastfood.adapters.presenters
 
-import tech.challenge.fastfood.fastfood.common.dtos.OrderItemDto
-import tech.challenge.fastfood.fastfood.common.dtos.ProductDto
 import tech.challenge.fastfood.fastfood.common.daos.OrderItemDAO
 import tech.challenge.fastfood.fastfood.common.dtos.request.CreateOrderItemRequestV1
 import tech.challenge.fastfood.fastfood.common.dtos.response.OrderItemResponseV1
+import tech.challenge.fastfood.fastfood.common.enums.CategoryEnum
+import tech.challenge.fastfood.fastfood.entities.OrderItem
+import tech.challenge.fastfood.fastfood.entities.Product
 
 object OrderItemMapper {
 
-    fun createOrderItemRequestToDto(requestV1: CreateOrderItemRequestV1) =
-        OrderItemDto(
-            product = ProductDto(id = requestV1.productId),
+    fun fromRequestToEntity(requestV1: CreateOrderItemRequestV1) =
+        OrderItem(
+            product = Product(id = requestV1.productId),
             quantity = requestV1.quantity
         )
 
-    fun toEntity(orderItemDto: OrderItemDto) =
+    fun toEntity(dao: OrderItemDAO) =
+        OrderItem(
+            id = dao.id,
+            product = ProductMapper.toEntity(dao.product!!),
+            orderId = dao.orderId,
+            quantity = dao.quantity,
+            createdAt = dao.createdAt,
+            updatedAt = dao.updatedAt
+        )
+
+    fun toDao(entity: OrderItem) =
         OrderItemDAO(
-            id = orderItemDto.id,
-            product = ProductMapper.toEntity(orderItemDto.product!!),
-            orderId = orderItemDto.orderId,
-            quantity = orderItemDto.quantity,
-            createdAt = orderItemDto.createdAt,
-            updatedAt = orderItemDto.updatedAt
+            id = entity.id,
+            product = ProductMapper.toDao(entity.product!!),
+            orderId = entity.orderId,
+            quantity = entity.quantity,
+            createdAt = entity.createdAt,
+            updatedAt = entity.updatedAt
         )
 
-    fun toDto(orderItemDAO: OrderItemDAO) =
-        OrderItemDto(
-            id = orderItemDAO.id,
-            product = ProductMapper.toDto(orderItemDAO.product!!),
-            orderId = orderItemDAO.orderId,
-            quantity = orderItemDAO.quantity,
-            createdAt = orderItemDAO.createdAt,
-            updatedAt = orderItemDAO.updatedAt
-        )
-
-    fun toOrderItemResponseV1(orderItemDto: OrderItemDto) =
+    fun toOrderItemResponseV1(entity: OrderItem) =
         OrderItemResponseV1(
-            id = orderItemDto.id,
-            productId = orderItemDto.product?.id,
-            category = orderItemDto.product?.category,
-            quantity = orderItemDto.quantity,
-            price = orderItemDto.product?.price
+            id = entity.id,
+            productId = entity.product?.id,
+            category = CategoryEnum.valueOf(entity.product?.category!!),
+            quantity = entity.quantity,
+            price = entity.product.price
         )
-
-
 
 }
