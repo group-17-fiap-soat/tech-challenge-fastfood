@@ -13,11 +13,7 @@ class PaymentController(
     val getPaymentStatusUseCase: GetPaymentStatusUseCase
 ) {
 
-    @PostMapping
-    fun createPayment(@RequestBody request: CreatePaymentRequestV1): ResponseEntity<PixPaymentResponseV1> {
-        val response = createPaymentUseCase.execute(request.value, request.email)
-        return ResponseEntity.ok(response)
-    }
+
 
     @GetMapping("/status/{paymentId}")
     fun getPaymentStatus(@PathVariable paymentId: Long): ResponseEntity<Map<String, String>> {
