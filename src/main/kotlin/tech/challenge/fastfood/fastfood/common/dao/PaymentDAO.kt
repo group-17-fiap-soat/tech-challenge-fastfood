@@ -3,8 +3,8 @@ package tech.challenge.fastfood.fastfood.common.dao
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
+import tech.challenge.fastfood.fastfood.common.enums.PaymentStatusEnum
 import java.math.BigDecimal
-import java.time.Instant
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -16,6 +16,9 @@ data class PaymentDAO(
     @Column(name = "id", updatable = false, nullable = false)
     val id: UUID? = null,
 
+    @Column(name = "external_id", updatable = false, nullable = false)
+    val externalId: Long? = null,
+
     @Column(name = "order_id")
     val orderId: UUID?,
 
@@ -24,6 +27,10 @@ data class PaymentDAO(
 
     @Column(name = "payment_method", nullable = false)
     val paymentMethod: String,
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_status", nullable = false)
+    val paymentStatus: PaymentStatusEnum,
 
     @Column(name = "payment_date", nullable = false, updatable = false)
     @CreationTimestamp

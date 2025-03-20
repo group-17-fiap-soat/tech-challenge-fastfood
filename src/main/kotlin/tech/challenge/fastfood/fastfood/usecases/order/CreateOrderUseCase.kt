@@ -8,12 +8,14 @@ import tech.challenge.fastfood.fastfood.common.interfaces.gateway.OrderItemGatew
 import tech.challenge.fastfood.fastfood.common.interfaces.gateway.ProductGatewayInterface
 import tech.challenge.fastfood.fastfood.entities.Order
 import tech.challenge.fastfood.fastfood.entities.OrderItem
+import tech.challenge.fastfood.fastfood.usecases.payment.CreatePaymentUseCase
 
 @Service
 class CreateOrderUseCase(
     private val orderGatewayInterface: OrderGatewayInterface,
     private val orderItemGatewayInterface: OrderItemGatewayInterface,
-    private val productGatewayInterface: ProductGatewayInterface
+    private val productGatewayInterface: ProductGatewayInterface,
+    private val createPaymentUseCase: CreatePaymentUseCase,
 ) {
 
     @Transactional(rollbackFor = [Exception::class])
@@ -27,6 +29,8 @@ class CreateOrderUseCase(
             val productInfo = productGatewayInterface.findByOrderItemId(orderItem.id!!)
             orderItem.copy(product = productInfo)
         }
+
+        or
 
         return orderEntity.copy(orderItems = orderItemsWithProductInfo)
     }

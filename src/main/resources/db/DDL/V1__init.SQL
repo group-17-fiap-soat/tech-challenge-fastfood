@@ -59,8 +59,10 @@ CREATE TABLE tb_payment
 (
     id             UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     order_id       UUID REFERENCES tb_order (id),
+    external_id    NUMERIC NOT NULL,
+    payment_status TEXT NOT NULL,
     total_amount   NUMERIC NOT NULL,
-    payment_method TEXT    NOT NULL,
+    payment_method TEXT NOT NULL,
     payment_date   TIMESTAMPTZ      DEFAULT now(),
     created_at     TIMESTAMPTZ      DEFAULT now(),
     updated_at     TIMESTAMPTZ      DEFAULT now()
