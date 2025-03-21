@@ -9,7 +9,6 @@ import tech.challenge.fastfood.fastfood.common.interfaces.gateway.OrderItemGatew
 import tech.challenge.fastfood.fastfood.common.interfaces.gateway.ProductGatewayInterface
 import tech.challenge.fastfood.fastfood.entities.Order
 import tech.challenge.fastfood.fastfood.entities.OrderItem
-import tech.challenge.fastfood.fastfood.entities.PaymentAssociation
 import tech.challenge.fastfood.fastfood.usecases.payment.CreatePaymentUseCase
 
 @Service
@@ -20,7 +19,6 @@ class CreateOrderUseCase(
     private val createPaymentUseCase: CreatePaymentUseCase,
 ) {
 
-    @Transactional(rollbackFor = [Exception::class])
     fun execute(order: Order): Order {
         validateOrderItems(orderItems = order.orderItems)
 
@@ -32,8 +30,9 @@ class CreateOrderUseCase(
             orderItem.copy(product = productInfo)
         }
 
-        val paymentAssociation = createPaymentUseCase.execute(order)
-        return orderEntity.copy(orderItems = orderItemsWithProductInfo, payment = paymentAssociation)
+        val orderWithItems = orderEntity.copy(orderItems = orderItemsWithProductInfo)
+        val paymentAssociation = createPaymentUseCase.execute(orderWithItems)
+        return orderWithItems.copy(payment = paymentAssociation)
     }
 
     private fun validateOrderItems(orderItems: List<OrderItem>) {

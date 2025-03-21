@@ -20,7 +20,7 @@ class CreatePaymentUseCase(
 ) {
     companion object {
         private const val DEFAULT_PAYMENT_METHOD: String = "pix"
-        private const val WEBHOOK_URL: String = "springboot.local.com/api/payments/webhook"
+        private const val WEBHOOK_URL: String = "https://springboot.local.com/api/payments/webhook"
     }
 
     fun execute(order: Order, paymentMethod: String? = DEFAULT_PAYMENT_METHOD): PaymentAssociation {
@@ -28,8 +28,7 @@ class CreatePaymentUseCase(
         val paymentRequest = PaymentCreateRequest.builder()
             .transactionAmount(order.totalPrice)
             .paymentMethodId(paymentMethod)
-            .payer(PaymentPayerRequest.builder().email("manocchio.gustavo@gmail.com").build())
-            .notificationUrl(WEBHOOK_URL)
+            .payer(PaymentPayerRequest.builder().email("cliente@gmail.com").build())
             .build()
 
         val payment: Payment = paymentClient.create(paymentRequest)

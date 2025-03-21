@@ -1,16 +1,15 @@
 package tech.challenge.fastfood.fastfood.adapters.controllers
+
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import tech.challenge.fastfood.fastfood.common.dto.request.CreatePaymentRequestV1
-import tech.challenge.fastfood.fastfood.common.dto.response.PixPaymentResponseV1
-import tech.challenge.fastfood.fastfood.usecases.payment.CreatePaymentUseCase
 import tech.challenge.fastfood.fastfood.usecases.payment.GetPaymentStatusUseCase
+import tech.challenge.fastfood.fastfood.usecases.payment.ProcessPaymentUseCase
 
 @RestController
 @RequestMapping("/api/payments")
 class PaymentController(
-    val createPaymentUseCase: CreatePaymentUseCase,
-    val getPaymentStatusUseCase: GetPaymentStatusUseCase
+    val getPaymentStatusUseCase: GetPaymentStatusUseCase,
+    val processPaymentUseCase: ProcessPaymentUseCase
 ) {
 
 
@@ -22,16 +21,12 @@ class PaymentController(
 
     @PostMapping("/webhook")
     fun receiveWebhook(@RequestBody payload: Map<String, Any>): ResponseEntity<String> {
-//        val action = payload["action"] as? String
-//        val paymentId = (payload["data"] as? Map<String, Any>)?.get("id") as? Long
+        val action = payload["action"] as? String
+        val paymentId = (payload["data"] as? Map<String, Any>)?.get("id") as? Long
+        requireNotNull(paymentId)
+        requireNotNull(action)
 
-//        if (paymentId != null && action == "payment.updated") {
-//            val status = mpPixService.checkPaymentStatus(paymentId)
-//            println("🔔 Payment $paymentId updated: $status")
-//
-//            // TODO: Process the payment (update DB, notify user, etc.)
-//        }
-        System.out.println("PAGOU PORRAAAAAAAAAAAAAAAAA")
+        processPaymentUseCase.execute(paymentId, action)
         return ResponseEntity.ok("Webhook received")
     }
 }

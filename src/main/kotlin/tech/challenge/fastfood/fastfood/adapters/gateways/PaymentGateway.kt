@@ -18,4 +18,8 @@ class PaymentGateway(
     override fun findByOrderId(id: UUID): PaymentData? {
         return paymentDataSource.findByOrderId(id)?.let(PaymentMapper::toEntity)
     }
+
+    override fun findByExternalId(id: Long): PaymentData? {
+        return paymentDataSource.findByExternalId(id)?.let(PaymentMapper::toEntity)
+    }
 }
