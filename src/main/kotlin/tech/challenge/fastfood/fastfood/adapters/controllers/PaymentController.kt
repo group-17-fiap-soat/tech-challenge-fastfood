@@ -22,7 +22,7 @@ class PaymentController(
     @PostMapping("/webhook")
     fun receiveWebhook(@RequestBody payload: Map<String, Any>): ResponseEntity<String> {
         val action = payload["action"] as? String
-        val paymentId = (payload["data"] as? Map<String, Any>)?.get("id") as? Long
+        val paymentId = (payload["data"] as? Map<*, *>)?.get("id") as? Long
         requireNotNull(paymentId)
         requireNotNull(action)
 
