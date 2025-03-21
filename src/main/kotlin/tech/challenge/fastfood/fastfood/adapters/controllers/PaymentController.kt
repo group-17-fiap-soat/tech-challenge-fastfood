@@ -19,7 +19,7 @@ class PaymentController(
     @GetMapping("/status/{paymentId}")
     fun getPaymentStatus(@PathVariable paymentId: UUID): ResponseEntity<PaymentStatusResponseV1> {
         val status = getPaymentStatusUseCase.execute(paymentId)
-            ?: throw EntityNotFoundException("Payment with given id not found")
+            ?: throw EntityNotFoundException("Pagamento com id fornecido não encontrado")
 
         return ResponseEntity.ok(PaymentStatusResponseV1(status))
     }

@@ -37,8 +37,8 @@ object PaymentMapper {
 
     fun associationToResponse(association: PaymentAssociation)=
          PaymentResponseV1(
-           id = association.paymentData.id,
-           externalId = association.paymentData.externalId,
+           id = association.paymentData?.id,
+           externalId = association.paymentData?.externalId,
            data = association.data
         )
 

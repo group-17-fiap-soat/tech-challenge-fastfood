@@ -19,7 +19,7 @@ class ProcessPaymentUseCase(
             val payment = paymentGatewayInterface.findByExternalId(externalId)
             payment?.copy(paymentStatus = PaymentStatusEnum.getByStatus(status))
                 ?.let(paymentGatewayInterface::save)
-                ?: EntityNotFoundException("Payment with id $externalId not found")
+                ?: EntityNotFoundException("Pagamento com id $externalId não encontrado")
 
             val order = orderGatewayInterface.findById(payment!!.orderId!!)
             orderGatewayInterface.save(order!!.copy(status = OrderStatusEnum.RECEIVED))
