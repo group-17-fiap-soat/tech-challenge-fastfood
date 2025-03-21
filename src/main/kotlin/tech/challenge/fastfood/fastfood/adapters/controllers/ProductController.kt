@@ -1,5 +1,6 @@
 package tech.challenge.fastfood.fastfood.adapters.controllers
 
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -27,7 +28,7 @@ class ProductController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     override fun createProduct(
-        @RequestBody request: CreateProductRequestV1
+        @RequestBody @Valid request: CreateProductRequestV1
     ): ResponseEntity<ProductResponseV1> {
         val product = ProductMapper.fromRequestToEntity(request)
         val response = createProductUseCase.execute(product).let(ProductMapper::toProductResponseV1)
@@ -37,7 +38,7 @@ class ProductController(
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
     override fun putProduct(
-        @RequestBody request: UpdateProductRequestV1
+        @RequestBody @Valid request: UpdateProductRequestV1
     ): ResponseEntity<ProductResponseV1> {
         val product = ProductMapper.fromRquestToEntity(request)
         val response = putProductUseCase.execute(product).let(ProductMapper::toProductResponseV1)

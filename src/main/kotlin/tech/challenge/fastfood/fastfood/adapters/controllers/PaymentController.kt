@@ -1,6 +1,7 @@
 package tech.challenge.fastfood.fastfood.adapters.controllers
 
 import jakarta.persistence.EntityNotFoundException
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import tech.challenge.fastfood.fastfood.common.dto.request.WebhookRequestV1
@@ -25,7 +26,7 @@ class PaymentController(
     }
 
     @PostMapping("/webhook")
-    fun receiveWebhook(@RequestBody request: WebhookRequestV1): ResponseEntity<String> {
+    fun receiveWebhook(@RequestBody @Valid request: WebhookRequestV1): ResponseEntity<String> {
         request.data["id"]?.toLong()?.let { externalId -> processPaymentUseCase.execute(externalId, request.action) }
         return ResponseEntity.ok("Webhook received, payment with externalId: ${request.data["id"]} processed")
     }

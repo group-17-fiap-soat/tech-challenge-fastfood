@@ -1,5 +1,6 @@
 package tech.challenge.fastfood.fastfood.adapters.controllers
 
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -46,7 +47,7 @@ class OrderController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     override fun createOrder(
-        @RequestBody request: CreateOrderRequestV1
+        @RequestBody @Valid request: CreateOrderRequestV1
     ): ResponseEntity<OrderResponseV1> {
         val order = OrderMapper.requestToEntity(request)
         val createdOrder = createOrderUseCase.execute(order)
