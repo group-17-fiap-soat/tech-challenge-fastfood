@@ -3,11 +3,13 @@ package tech.challenge.fastfood.fastfood.usecases.order
 import org.apache.coyote.BadRequestException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import tech.challenge.fastfood.fastfood.common.enums.OrderStatusEnum
 import tech.challenge.fastfood.fastfood.common.interfaces.gateway.OrderGatewayInterface
 import tech.challenge.fastfood.fastfood.common.interfaces.gateway.OrderItemGatewayInterface
 import tech.challenge.fastfood.fastfood.common.interfaces.gateway.ProductGatewayInterface
 import tech.challenge.fastfood.fastfood.entities.Order
 import tech.challenge.fastfood.fastfood.entities.OrderItem
+import tech.challenge.fastfood.fastfood.entities.PaymentAssociation
 import tech.challenge.fastfood.fastfood.usecases.payment.CreatePaymentUseCase
 
 @Service
@@ -22,7 +24,7 @@ class CreateOrderUseCase(
     fun execute(order: Order): Order {
         validateOrderItems(orderItems = order.orderItems)
 
-        val orderEntity = orderGatewayInterface.save(order)
+        val orderEntity = orderGatewayInterface.save(order.copy(status = OrderStatusEnum.PENDING_AUTHORIZATION))
         val orderItems: List<OrderItem> = order.orderItems.map { it.copy(orderId = orderEntity.id) }
         val savedOrderItems = orderItemGatewayInterface.saveAll(orderItems)
         val orderItemsWithProductInfo = savedOrderItems.map { orderItem ->
@@ -30,9 +32,8 @@ class CreateOrderUseCase(
             orderItem.copy(product = productInfo)
         }
 
-        or
-
-        return orderEntity.copy(orderItems = orderItemsWithProductInfo)
+        val paymentAssociation = createPaymentUseCase.execute(order)
+        return orderEntity.copy(orderItems = orderItemsWithProductInfo, payment = paymentAssociation)
     }
 
     private fun validateOrderItems(orderItems: List<OrderItem>) {

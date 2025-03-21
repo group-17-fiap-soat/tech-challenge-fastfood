@@ -7,5 +7,5 @@ import java.util.UUID
 
 @Repository
 interface PaymentDataSource: JpaRepository<PaymentDAO, UUID> {
-
+    fun findByOrderId(id: UUID): PaymentDAO?
 }

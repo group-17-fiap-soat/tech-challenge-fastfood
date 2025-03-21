@@ -23,8 +23,6 @@ class OrderGateway(
 
     override fun save(entity: Order): Order {
         val orderEntity = OrderMapper.toDao(entity)
-            .copy(status = OrderStatusEnum.RECEIVED)
-
         return OrderMapper.toEntity(orderDataSource.save(orderEntity))
     }
 

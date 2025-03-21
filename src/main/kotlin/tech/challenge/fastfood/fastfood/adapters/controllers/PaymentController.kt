@@ -14,7 +14,6 @@ class PaymentController(
 ) {
 
 
-
     @GetMapping("/status/{paymentId}")
     fun getPaymentStatus(@PathVariable paymentId: Long): ResponseEntity<Map<String, String>> {
         val status = getPaymentStatusUseCase.execute(paymentId)

@@ -6,7 +6,7 @@ import java.util.*
 
 data class OrderResponseV1(
     val id: UUID? = null,
-    val payment: Map<String, Any>? = null,
+    val payment: PaymentResponseV1? = null,
     val orderNumber: Long? = null,
     val customerId: UUID? = null,
     val orderItems: List<OrderItemResponseV1>? = null,

@@ -40,6 +40,7 @@ object OrderMapper {
     fun toOrderResponseV1(entity: Order) =
         OrderResponseV1(
             id = entity.id,
+            payment = entity.payment?.let(PaymentMapper::associationToResponse),
             orderNumber = entity.orderNumber,
             customerId = entity.customerId,
             orderItems = entity.orderItems.map(OrderItemMapper::toOrderItemResponseV1),
