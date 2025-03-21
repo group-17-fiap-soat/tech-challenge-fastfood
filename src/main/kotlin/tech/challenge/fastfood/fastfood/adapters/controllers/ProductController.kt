@@ -5,9 +5,9 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import tech.challenge.fastfood.fastfood.adapters.controllers.operation.ProductOperation
 import tech.challenge.fastfood.fastfood.adapters.presenters.ProductMapper
-import tech.challenge.fastfood.fastfood.common.dtos.request.CreateProductRequestV1
-import tech.challenge.fastfood.fastfood.common.dtos.request.UpdateProductRequestV1
-import tech.challenge.fastfood.fastfood.common.dtos.response.ProductResponseV1
+import tech.challenge.fastfood.fastfood.common.dto.request.CreateProductRequestV1
+import tech.challenge.fastfood.fastfood.common.dto.request.UpdateProductRequestV1
+import tech.challenge.fastfood.fastfood.common.dto.response.ProductResponseV1
 import tech.challenge.fastfood.fastfood.common.enums.CategoryEnum
 import tech.challenge.fastfood.fastfood.usecases.product.CreateProductUseCase
 import tech.challenge.fastfood.fastfood.usecases.product.FindAllProductUseCase

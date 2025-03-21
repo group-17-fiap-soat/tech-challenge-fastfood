@@ -1,8 +1,8 @@
 package tech.challenge.fastfood.fastfood.adapters.presenters
 
-import tech.challenge.fastfood.fastfood.common.daos.OrderDAO
-import tech.challenge.fastfood.fastfood.common.dtos.request.CreateOrderRequestV1
-import tech.challenge.fastfood.fastfood.common.dtos.response.OrderResponseV1
+import tech.challenge.fastfood.fastfood.common.dao.OrderDAO
+import tech.challenge.fastfood.fastfood.common.dto.request.CreateOrderRequestV1
+import tech.challenge.fastfood.fastfood.common.dto.response.OrderResponseV1
 import tech.challenge.fastfood.fastfood.entities.Order
 
 object OrderMapper {
@@ -40,6 +40,7 @@ object OrderMapper {
     fun toOrderResponseV1(entity: Order) =
         OrderResponseV1(
             id = entity.id,
+            payment = entity.payment?.let(PaymentMapper::associationToResponse),
             orderNumber = entity.orderNumber,
             customerId = entity.customerId,
             orderItems = entity.orderItems.map(OrderItemMapper::toOrderItemResponseV1),

@@ -5,9 +5,9 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import tech.challenge.fastfood.fastfood.adapters.controllers.operation.CustomerOperation
 import tech.challenge.fastfood.fastfood.adapters.presenters.CustomerMapper
-import tech.challenge.fastfood.fastfood.common.dtos.request.AuthCustomerRequestV1
-import tech.challenge.fastfood.fastfood.common.dtos.request.CreateCustomerRequestV1
-import tech.challenge.fastfood.fastfood.common.dtos.response.CustomerResponseV1
+import tech.challenge.fastfood.fastfood.common.dto.request.AuthCustomerRequestV1
+import tech.challenge.fastfood.fastfood.common.dto.request.CreateCustomerRequestV1
+import tech.challenge.fastfood.fastfood.common.dto.response.CustomerResponseV1
 import tech.challenge.fastfood.fastfood.common.exception.InvalidCustomerDataException
 import tech.challenge.fastfood.fastfood.usecases.customer.CreateCustomerUseCase
 import tech.challenge.fastfood.fastfood.usecases.customer.GetCustomerByCpfUseCase

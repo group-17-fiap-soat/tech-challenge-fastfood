@@ -1,4 +1,4 @@
-package tech.challenge.fastfood.fastfood.common.daos
+package tech.challenge.fastfood.fastfood.common.dao
 
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp

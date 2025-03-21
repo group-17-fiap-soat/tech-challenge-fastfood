@@ -1,4 +1,4 @@
-package tech.challenge.fastfood.fastfood.common.dtos.response
+package tech.challenge.fastfood.fastfood.common.dto.response
 
 data class ErrorResponseV1 (
     val message: String,
