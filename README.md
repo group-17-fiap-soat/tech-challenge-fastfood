@@ -1,97 +1,249 @@
 # 🍔 Tech Challenge - FastFood Backend API 🍟
 
-Welcome to the **FastFood Backend Service**! This Kotlin-powered backend is designed to handle all the core
-functionalities of a FastFood management system. Hungry for some clean code and efficient API magic? Let’s get cooking!
-🧑‍💻🔥
+Bem-vindo ao **FastFood Backend Service**! Esta API desenvolvida em Kotlin é responsável por gerenciar as funcionalidades principais de um sistema de gestão de FastFood. Pronto para um código limpo e uma API eficiente? Bora começar! 🧑‍💻🔥
 
 ---
 
-## 🛠️ Quick Start Guide
+## 🛠️ Guia Rápido de Inicialização
 
-This project is fueled by **Docker Compose** to quickly set up your PostgreSQL database environment. Below is a
-breakdown of the environment variables you’ll need to configure for database connectivity. To get started, create
-a `.env` file by copying the structure provided in `.env.sample`.
+Este projeto utiliza **Docker Compose** para configurar rapidamente o ambiente com PostgreSQL. Abaixo estão as variáveis de ambiente necessárias para a conexão com o banco. Para começar, crie um arquivo `.env` com base no modelo `.env.sample`.
 
-| Variable            | Description                                                    |
-|---------------------|----------------------------------------------------------------|
-| `DATABASE`          | The database name Docker Compose will create                   |
-| `DATABASE_USER`     | The username for PostgreSQL authentication                     |
-| `DATABASE_PASSWORD` | Password for your PostgreSQL user                              |
-| `DATABASE_PORT`     | Host port for accessing PostgreSQL (default is usually `5432`) |
+| Variável                    | Descrição                                                  |
+|-----------------------------|------------------------------------------------------------|
+| `DATABASE`                  | Nome do banco de dados que será criado pelo Docker Compose |
+| `DATABASE_USER`             | Usuário para autenticação no PostgreSQL                    |
+| `DATABASE_PASSWORD`         | Senha do usuário do PostgreSQL                             |
+| `DATABASE_PORT`             | Porta para acesso ao PostgreSQL (padrão é `5432`)          |
+| `MERCADO_PAGO_ACCESS_TOKEN` | Token de acesso para a sdk do mercado pago                 |
 
 ---
 
-## 🚀 Setup Instructions
+## 🚀 Instruções de Setup (Docker Compose)
 
-1. **Create Your Environment File**
+1. **Crie seu arquivo `.env`**
 
-   Duplicate the `.env.sample` file to create your personalized `.env` file:
+   Duplique o `.env.sample` para criar o seu `.env` personalizado:
 
     ```bash
     cp .env.sample .env
     ```
 
-2. **Update Your Variables**
+2. **Atualize suas variáveis**
 
-   Open up `.env` and customize it to your taste (or stick with the sample values!):
+   Edite o `.env` com os valores desejados:
 
     ```plaintext
     DATABASE=db_example
     DATABASE_USER=user_example
     DATABASE_PASSWORD=password_example
     DATABASE_PORT=5432
+    MERCADO_PAGO_ACCESS_TOKEN=TOKEN
     ```
 
-3. **Create the Network**
+3. **Suba o ambiente com Docker Compose**
 
-   Before starting Docker Compose, create the network by running the following command:
-
-    ```bash
-    docker network create fastfood-network
-    ```
-
-4. **Start the Database with Docker Compose**
-
-   Let Docker Compose do the heavy lifting. Fire up PostgreSQL and the application with:
+   Deixe o Docker Compose cuidar do resto:
 
     ```bash
     docker-compose up --build -d
     ```
 
-5. **Check Your Connection**
+---
 
-   PostgreSQL should now be serving up data at `localhost:${DATABASE_PORT}`. Use the credentials in your `.env` to
-   connect. The FastFood application will be accessible at `http://localhost:8080`.
+# 🫙 Setup Kubernetes - K8S - Minikube
+
+## 🧱 Pré-requisitos
+
+- [Minikube](https://minikube.sigs.k8s.io/)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
 
 ---
 
-## 🔗 Spring Boot Integration
+## 🐳 Passo 1 – Build das imagens locais (Importante estar na raiz do projeto)
 
-The Spring Boot service will automatically pull in these environment variables to handle the database connection for
-you. Just make sure that `.env` is in place and configured correctly, then let Spring Boot take care of the rest!
+### 🔸 MacOS/Linux:
+```bash
+minikube start 
+eval $(minikube docker-env)
+docker build -f infra/db/Dockerfile -t fastfood-postgres:latest .
+docker build -t tech-challenge-fastfood:latest .
+```
+
+### 🔸 Windows (PowerShell):
+```powershell
+minikube start
+Invoke-Expression -Command "$(minikube docker-env | Out-String)"
+docker build -f infra/db/Dockerfile -t fastfood-postgres:latest .
+docker build -t tech-challenge-fastfood:latest .
+```
+
+> Certifique-se de estar na raiz do projeto ao rodar os builds.
 
 ---
 
-## 🧑‍💻 Swagger Documentation
+## 📦 Passo 2 – Aplicar os manifests Kubernetes
 
-Your FastFood API is documented with **Swagger UI**, providing a clean and interactive interface for exploring all
-available endpoints.
+Com todos os `.yaml` dentro da pasta `k8s`, rode:
 
-To access the Swagger UI:
+```bash
+kubectl apply -f k8s/
+```
 
-1. **Launch the Application** by running it through Docker as described above.
-2. **Open Swagger UI** in your browser at:
+> Isso criará: PV, PVC, Secrets, ConfigMaps, Services, Deployments e Ingress para a aplicação e o banco.
 
-   ```plaintext
-   http://localhost:8080/swagger-ui
-    ```
+Se você já rodou antes e quer reiniciar do zero:
+```bash
+kubectl delete deployment postgres fastfood-app
+kubectl delete pvc postgres-pvc
+kubectl delete pv postgres-pv
+kubectl apply -f k8s/
+```
 
-## 💡 Pro Tips & Troubleshooting
+---
 
-- **Database Not Connecting?** Double-check that Docker Compose is up and running, and make sure PostgreSQL isn’t
-  already running on the same port outside of Docker.
-- **Environment Variables Not Loading?** Ensure your IDE or terminal session recognizes the `.env` file. If not, restart
-  or source the `.env` file manually.
+## 🐘 Passo 4 – (Opcional) Acessar o PostgreSQL via DBeaver
 
-With that, you’re all set to start coding, deploying, and managing data like a pro. Welcome to FastFood, where speed
-meets deliciously clean code. 🍕🍟
+### Opção 1 – Usando `kubectl port-forward` (Recomendado)
+
+1. Descubra o nome do pod do PostgreSQL:
+```bash
+kubectl get pods
+```
+
+2. Redirecione a porta local:
+```bash
+kubectl port-forward pod/<nome-do-pod> 5432:5432
+```
+
+3. Configure no DBeaver:
+```
+Host: localhost
+Port: 5432
+Database: fastfood_db
+Usuário: fastfood
+Senha: Teste123
+```
+
+> Deixe o terminal aberto enquanto estiver usando o DBeaver.
+
+---
+
+### Opção 2 – Usando NodePort (menos seguro)
+
+Altere `postgres-service.yaml`:
+```yaml
+spec:
+  type: NodePort
+  ports:
+    - port: 5432
+      targetPort: 5432
+      nodePort: 30032
+```
+
+Descubra o IP do Minikube:
+```bash
+minikube ip
+```
+
+Use no DBeaver:
+```
+Host: <IP do Minikube>
+Porta: 30032
+Database: fastfood_db
+Usuário: fastfood
+Senha: Teste123
+```
+
+---
+
+## ✅ Verificações úteis
+
+- Verificar pods:
+```bash
+kubectl get pods
+```
+- Logs do banco:
+```bash
+kubectl logs deployment/postgres
+```
+- Verificar PVC e PV:
+```bash
+kubectl get pvc
+kubectl get pv
+```
+- Logs da aplicação:
+```bash
+kubectl logs deployment/fastfood-app
+```
+- Abrir painel do Kubernetes:
+```bash
+minikube dashboard
+```
+
+---
+
+## 📌 Observações
+
+- O script SQL só roda na **primeira vez**, quando o volume está limpo.
+- Para forçar nova execução:
+```bash
+kubectl delete pvc postgres-pvc
+kubectl delete pv postgres-pv
+```
+- O banco é acessado internamente via `postgres-service`.
+- Variáveis da aplicação estão nos `ConfigMaps` e `Secrets`.
+- O Ingress permite acesso via: http://springboot.local.com (adicione no `/etc/hosts`: `127.0.0.1 springboot.local.com`)
+---
+
+## 🌐 Acesso à aplicação
+
+A aplicação estará disponível em: `http://localhost:8080` (via Docker Compose) ou `http://springboot.local.com` (via Ingress).
+
+Para descobrir o endereço se não usar `/etc/hosts`:
+```bash
+minikube ip
+```
+
+Use:
+```
+http://<IP_DO_MINIKUBE>
+```
+
+---
+
+## 🔗 Integração com Spring Boot
+
+O serviço Spring Boot lê automaticamente as variáveis de ambiente para configurar a conexão com o banco. Com o `.env` correto ou os `Secrets` e `ConfigMaps` no K8S, a integração funciona automaticamente.
+
+---
+
+## 🧑‍💻 Documentação Swagger
+
+A API FastFood está documentada via **Swagger UI**. Para acessar:
+
+1. Garanta que a aplicação está rodando.
+2. Acesse:
+
+Docker
+```plaintext
+http://localhost:8080/swagger-ui
+```
+Ou, se estiver rodando via Minikube (K8S):
+
+```plaintext
+http://<IP_DO_MINIKUBE>/swagger-ui
+```
+
+Ingress
+```plaintext
+http://springboot.local.com/swagger-ui
+```
+
+---
+
+## 💡 Dicas e Solução de Problemas
+
+- **Erro ao conectar com o banco?** Verifique se o Docker Compose ou Minikube estão rodando corretamente.
+- **Variáveis de ambiente não reconhecidas?** Verifique se o `.env` está carregado corretamente ou se os ConfigMaps/Secrets estão aplicados.
+
+Agora você está pronto para codar, testar e gerenciar sua aplicação FastFood com estilo! 🚀🍔🍟
