@@ -10,10 +10,8 @@ data class UpdateProductRequestV1 (
     val id: UUID? = null,
 
     @field:NotNull(message = "Nome não pode estar vazio.")
-    @field:Pattern(regexp = "^[A-Za-z0-9_ ]+$", message = "O nome do item deve ser alfanumérico e pode incluir espaços.")
     val name: String,
 
-    @field:Pattern(regexp = "^[A-Za-z0-9_ ]+$", message = "O nome do item deve ser alfanumérico e pode incluir espaços.")
     val description: String?,
 
     @field:NotNull(message = "Campo não pode estar vazio.")
