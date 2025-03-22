@@ -1,6 +1,22 @@
 # 🍔 Tech Challenge - FastFood Backend API 🍟
 
-Bem-vindo ao **FastFood Backend Service**! Esta API desenvolvida em Kotlin é responsável por gerenciar as funcionalidades principais de um sistema de gestão de FastFood. Pronto para um código limpo e uma API eficiente? Bora começar! 🧑‍💻🔥
+Bem-vindo ao **FastFood Backend Service**! Esta API desenvolvida em Kotlin é responsável por gerenciar as funcionalidades principais de um sistema de gestão de FastFood. 
+
+### 1️⃣ Requisitos de Negócio
+
+<img src="./docs/1.png" width="50%"/>
+---
+
+### 3️⃣ Fluxo de Pedido no Sistema FastFood
+
+<img src="./docs/2.png" width="50%"/>
+
+
+### 2️⃣ Arquitetura em Kubernetes (Minikube)
+
+<img src="./docs/3.png" width="50%"/>
+
+
 
 ---
 
@@ -56,6 +72,7 @@ Este projeto utiliza **Docker Compose** para configurar rapidamente o ambiente c
 
 - [Minikube](https://minikube.sigs.k8s.io/)
 - [kubectl](https://kubernetes.io/docs/tasks/tools/)
+- [ngrok](https://)
 
 ---
 
