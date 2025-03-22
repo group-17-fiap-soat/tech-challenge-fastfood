@@ -7,12 +7,12 @@ Bem-vindo ao **FastFood Backend Service**! Esta API desenvolvida em Kotlin é re
 <img src="./docs/1.png" width="50%"/>
 ---
 
-### 3️⃣ Fluxo de Pedido no Sistema FastFood
+### 2️⃣ Fluxo de Pedido no Sistema FastFood
 
 <img src="./docs/2.png" width="50%"/>
 
 
-### 2️⃣ Arquitetura em Kubernetes (Minikube)
+### 3️⃣ Arquitetura em Kubernetes (Minikube)
 
 <img src="./docs/3.png" width="50%"/>
 
