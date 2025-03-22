@@ -214,9 +214,27 @@ kubectl delete pv postgres-pv
 
 ## 🌐 Acesso à aplicação
 
-A aplicação estará disponível em: `http://localhost:8080` (via Docker Compose) ou `http://springboot.local.com` (via Ingress).
+---
 
-Para descobrir o endereço se não usar `/etc/hosts`:
+### 🚀 Verificando a URL pública gerada
+
+O ngrok gerou uma url pública para acessar a sua aplicação
+
+```bash
+kubectl logs deployment/ngrok
+```
+
+Você verá algo como 
+``
+t=2025-03-22T22:50:50+0000 lvl=info msg="started tunnel" obj=tunnels name=fastfood addr=http://ingress-nginx-controller.ingress-nginx:80 url=https://fb82-189-68-138-48.ngrok-free.app
+``
+
+A aplicação estará também estará disponível em:`http://springboot.local.com` (via Ingress).
+ou `http://localhost:8080` (via Docker Compose)
+
+
+
+Para descobrir o endereço se não usar `/etc/hosts` e nem quiser utilizar a url pública gerada pelo ngrok:
 ```bash
 minikube ip
 ```
