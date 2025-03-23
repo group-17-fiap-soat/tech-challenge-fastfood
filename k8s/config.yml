@@ -1,0 +1,163 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastfood-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastfood-app
+  template:
+    metadata:
+      labels:
+        app: fastfood-app
+    spec:
+      containers:
+        - name: fastfood
+          image: tech-challenge-fastfood:latest  # Local Docker image
+          imagePullPolicy: Never  # Use locally built image, don’t pull from a registry
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DATABASE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: fastfood-config
+                  key: DATABASE_HOST
+
+            - name: DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: fastfood-config
+                  key: DATABASE
+
+            - name: DATABASE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: fastfood-config
+                  key: DATABASE_PORT
+
+            - name: DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: fastfood-secret
+                  key: DATABASE_USER
+
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: fastfood-secret
+                  key: DATABASE_PASSWORD
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastfood-service
+spec:
+  type: ClusterIP
+  selector:
+    app: fastfood-app
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8080
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fastfood-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/use-forwarded-headers: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: springboot.local.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: fastfood-service
+                port:
+                  number: 80
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: fastfood-app
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: fastfood-app
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metrics-server
+  namespace: kube-system
+  labels:
+    k8s-app: metrics-server
+spec:
+  selector:
+    matchLabels:
+      k8s-app: metrics-server
+  template:
+    metadata:
+      name: metrics-server
+      labels:
+        k8s-app: metrics-server
+    spec:
+      serviceAccountName: metrics-server
+      volumes:
+        # mount in tmp so we can safely use from-scratch images and/or read-only containers
+        - name: tmp-dir
+          emptyDir: {}
+      hostNetwork: true
+      containers:
+        - name: metrics-server
+          image: k8s.gcr.io/metrics-server/metrics-server:v0.3.7
+          imagePullPolicy: IfNotPresent
+          args:
+            - /metrics-server
+            - --cert-dir=/tmp
+            - --secure-port=4443
+            - --kubelet-preferred-address-types=InternalIP
+            - --kubelet-use-node-status-port
+            - --kubelet-insecure-tls
+          ports:
+            - name: main-port
+              containerPort: 4443
+              protocol: TCP
+          securityContext:
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1000
+          volumeMounts:
+            - name: tmp-dir
+              mountPath: /tmp
+      nodeSelector:
+        kubernetes.io/os: linux

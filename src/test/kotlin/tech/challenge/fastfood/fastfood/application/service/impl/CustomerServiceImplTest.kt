@@ -6,46 +6,59 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.*
-import tech.challenge.fastfood.fastfood.application.dto.CustomerDto
-import tech.challenge.fastfood.fastfood.domain.port.CustomerRepositoryPort
-import tech.challenge.fastfood.fastfood.infra.exception.InvalidCustomerDataException
-import tech.challenge.fastfood.fastfood.infra.mapper.CustomerMapper
+import tech.challenge.fastfood.fastfood.common.exception.InvalidCustomerDataException
+import tech.challenge.fastfood.fastfood.common.interfaces.gateway.CustomerGatewayInterface
+import tech.challenge.fastfood.fastfood.entities.Customer
+import tech.challenge.fastfood.fastfood.usecases.customer.CreateCustomerUseCase
+import tech.challenge.fastfood.fastfood.usecases.customer.GetCustomerByCpfUseCase
+import tech.challenge.fastfood.fastfood.usecases.customer.GetCustomerByIdUseCase
 import java.util.*
 
 class CustomerServiceImplTest {
 
-    private lateinit var customerRepositoryPort: CustomerRepositoryPort
-    private lateinit var customerService: CustomerServiceImpl
+    private lateinit var customerGatewayInterface: CustomerGatewayInterface
+    private lateinit var createCustomerUseCase: CreateCustomerUseCase
+    private lateinit var getCustomerByCpfUseCase: GetCustomerByCpfUseCase
+    private lateinit var getCustomerByIdUseCase: GetCustomerByIdUseCase
 
     @BeforeEach
     fun setUp() {
-        customerRepositoryPort = mock()
-        customerService = CustomerServiceImpl(customerRepositoryPort)
+        customerGatewayInterface = mock()
+        createCustomerUseCase = CreateCustomerUseCase(customerGatewayInterface)
+        getCustomerByCpfUseCase = GetCustomerByCpfUseCase(customerGatewayInterface)
+        getCustomerByIdUseCase = GetCustomerByIdUseCase(customerGatewayInterface)
     }
 
     @Test
     fun `createCustomer - sucesso`() {
-        val customerDto = CustomerDto(cpf = "12345678901", name = "João", email = "joao@example.com")
-        val savedEntity = CustomerMapper.toEntity(customerDto)
+        val customer = Customer(
+            cpf = "12345678901",
+            name = "João",
+            email = "joao@example.com"
+        )
 
-        `when`(customerRepositoryPort.save(customerDto)).thenReturn(savedEntity)
-        `when`(customerRepositoryPort.findByCpf("12345678901")).thenReturn(null)
-        `when`(customerRepositoryPort.findByEmail("joao@example.com")).thenReturn(null)
+        `when`(customerGatewayInterface.save(customer)).thenReturn(customer)
+        `when`(customerGatewayInterface.findByCpf("12345678901")).thenReturn(null)
+        `when`(customerGatewayInterface.findByEmail("joao@example.com")).thenReturn(null)
 
-        val result = customerService.createCustomer(customerDto)
+        val result = createCustomerUseCase.execute(customer)
 
-        assertEquals(customerDto.cpf, result.cpf)
-        assertEquals(customerDto.name, result.name)
-        assertEquals(customerDto.email, result.email)
-        verify(customerRepositoryPort).save(customerDto)
+        assertEquals(customer.cpf, result.cpf)
+        assertEquals(customer.name, result.name)
+        assertEquals(customer.email, result.email)
+        verify(customerGatewayInterface).save(customer)
     }
 
     @Test
     fun `createCustomer - falha CPF ausente`() {
-        val customerDto = CustomerDto(cpf = null, name = "João", email = "joao@example.com")
+        val customer = Customer(
+            cpf = null,
+            name = "João",
+            email = "joao@example.com"
+        )
 
         val exception = assertThrows<InvalidCustomerDataException> {
-            customerService.createCustomer(customerDto)
+            createCustomerUseCase.execute(customer)
         }
 
         assertEquals("CPF tem que ser preenchido.", exception.message)
@@ -53,10 +66,14 @@ class CustomerServiceImplTest {
 
     @Test
     fun `createCustomer - falha CPF inválido`() {
-        val customerDto = CustomerDto(cpf = "12345", name = "João", email = "joao@example.com")
+        val customer = Customer(
+            cpf = "12345",
+            name = "João",
+            email = "joao@example.com"
+        )
 
         val exception = assertThrows<InvalidCustomerDataException> {
-            customerService.createCustomer(customerDto)
+            createCustomerUseCase.execute(customer)
         }
 
         assertEquals("CPF inválido.", exception.message)
@@ -64,12 +81,16 @@ class CustomerServiceImplTest {
 
     @Test
     fun `createCustomer - falha CPF já cadastrado`() {
-        val customerDto = CustomerDto(cpf = "12345678901", name = "João", email = "joao@example.com")
+        val customer = Customer(
+            cpf = "12345678901",
+            name = "João",
+            email = "joao@example.com"
+        )
 
-        `when`(customerRepositoryPort.findByCpf("12345678901")).thenReturn(CustomerMapper.toEntity(customerDto))
+        `when`(customerGatewayInterface.findByCpf("12345678901")).thenReturn(customer)
 
         val exception = assertThrows<InvalidCustomerDataException> {
-            customerService.createCustomer(customerDto)
+            createCustomerUseCase.execute(customer)
         }
 
         assertEquals("CPF já cadastrado.", exception.message)
@@ -77,12 +98,16 @@ class CustomerServiceImplTest {
 
     @Test
     fun `createCustomer - falha Email já cadastrado`() {
-        val customerDto = CustomerDto(cpf = "12345678901", name = "João", email = "joao@example.com")
+        val customer = Customer(
+            cpf = "12345678901",
+            name = "João",
+            email = "joao@example.com"
+        )
 
-        `when`(customerRepositoryPort.findByEmail("joao@example.com")).thenReturn(CustomerMapper.toEntity(customerDto))
+        `when`(customerGatewayInterface.findByEmail("joao@example.com")).thenReturn(customer)
 
         val exception = assertThrows<InvalidCustomerDataException> {
-            customerService.createCustomer(customerDto)
+            createCustomerUseCase.execute(customer)
         }
 
         assertEquals("Email já cadastrado.", exception.message)
@@ -90,21 +115,25 @@ class CustomerServiceImplTest {
 
     @Test
     fun `getCustomerByCpf - sucesso`() {
-        val customerDto = CustomerDto(cpf = "12345678901", name = "João", email = "joao@example.com")
+        val customer = Customer(
+            cpf = "12345678901",
+            name = "João",
+            email = "joao@example.com"
+        )
 
-        `when`(customerRepositoryPort.findByCpf("12345678901")).thenReturn(CustomerMapper.toEntity(customerDto))
+        `when`(customerGatewayInterface.findByCpf("12345678901")).thenReturn(customer)
 
-        val result = customerService.getCustomerByCpf("12345678901")
+        val result = getCustomerByCpfUseCase.execute("12345678901")
 
-        assertEquals(customerDto.cpf, result?.cpf)
-        assertEquals(customerDto.name, result?.name)
-        assertEquals(customerDto.email, result?.email)
+        assertEquals(customer.cpf, result?.cpf)
+        assertEquals(customer.name, result?.name)
+        assertEquals(customer.email, result?.email)
     }
 
     @Test
     fun `getCustomerByCpf - falha CPF inválido`() {
         val exception = assertThrows<InvalidCustomerDataException> {
-            customerService.getCustomerByCpf("12345")
+            getCustomerByCpfUseCase.execute("12345")
         }
 
         assertEquals("CPF inválido.", exception.message)
@@ -112,34 +141,38 @@ class CustomerServiceImplTest {
 
     @Test
     fun `getCustomerByCpf - falha Cliente não encontrado`() {
-        `when`(customerRepositoryPort.findByCpf("12345678901")).thenReturn(null)
+        `when`(customerGatewayInterface.findByCpf("12345678901")).thenReturn(null)
 
-        val result = customerService.getCustomerByCpf("12345678901")
+        val result = getCustomerByCpfUseCase.execute("12345678901")
 
         assertNull(result)
     }
 
     @Test
     fun `getCustomerById - sucesso`() {
-        val customerDto = CustomerDto(cpf = "12345678901", name = "João", email = "joao@example.com")
+        val customer = Customer(
+            cpf = "12345678901",
+            name = "João",
+            email = "joao@example.com"
+        )
         val customerId = UUID.randomUUID()
 
-        `when`(customerRepositoryPort.findById(customerId)).thenReturn(CustomerMapper.toEntity(customerDto))
+        `when`(customerGatewayInterface.findById(customerId)).thenReturn(customer)
 
-        val result = customerService.getCustomerById(customerId)
+        val result = getCustomerByIdUseCase.execute(customerId)
 
-        assertEquals(customerDto.cpf, result?.cpf)
-        assertEquals(customerDto.name, result?.name)
-        assertEquals(customerDto.email, result?.email)
+        assertEquals(customer.cpf, result?.cpf)
+        assertEquals(customer.name, result?.name)
+        assertEquals(customer.email, result?.email)
     }
 
     @Test
     fun `getCustomerById - falha Cliente não encontrado`() {
         val customerId = UUID.randomUUID()
 
-        `when`(customerRepositoryPort.findById(customerId)).thenReturn(null)
+        `when`(customerGatewayInterface.findById(customerId)).thenReturn(null)
 
-        val result = customerService.getCustomerById(customerId)
+        val result = getCustomerByIdUseCase.execute(customerId)
 
         assertNull(result)
     }

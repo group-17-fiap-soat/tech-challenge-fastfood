@@ -5,7 +5,7 @@ spring:
   application:
     name: fastfood
   datasource:
-    url: jdbc:postgresql://postgres:${DATABASE_PORT}/${DATABASE}
+    url: jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE}
     username: ${DATABASE_USER}
     password: ${DATABASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
@@ -27,6 +27,12 @@ spring:
     baseline-on-migrate: true
 
 springdoc:
+  use-fqn: true
+  show-actuator: true
+  default-produces-media-type: application/json
+  default-consumes-media-type: application/json
+  remove-broken-reference-definitions: true
+  use-management-port: false
   swagger-ui:
     path: /swagger-ui
     operationsSorter: method

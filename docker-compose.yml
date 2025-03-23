@@ -1,7 +1,8 @@
 services:
   postgres:
-    image: postgres:14
-    container_name: fastfood-postgres
+    image: postgres:16-alpine
+    env_file:
+      - .env
     environment:
       POSTGRES_DB: ${DATABASE}
       POSTGRES_USER: ${DATABASE_USER}
@@ -12,10 +13,31 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - fastfood-network
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${DATABASE_USER}", "-d", "${DATABASE}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    env_file:
+      - .env
+    build:
+      context: .   # Adicione esta linha para indicar que o Docker deve usar o diretório atual
+      dockerfile: Dockerfile
+    container_name: fastfood-backend
+    ports:
+      - "8081:8080"
+    environment:
+      POSTGRES_DOCKER: jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE}
+    networks:
+      - fastfood-network
+    depends_on:
+      postgres:
+        condition: service_healthy
 
 volumes:
   postgres_data:
 
 networks:
   fastfood-network:
-    external: true
