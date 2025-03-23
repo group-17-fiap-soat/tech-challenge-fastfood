@@ -23,6 +23,7 @@ services:
     env_file:
       - .env
     build:
+      context: .   # Adicione esta linha para indicar que o Docker deve usar o diretório atual
       dockerfile: Dockerfile
     container_name: fastfood-backend
     ports:
