@@ -1,5 +1,6 @@
 package tech.challenge.fastfood.fastfood.adapters.controllers
 
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -26,7 +27,7 @@ class CustomerController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     override fun createCustomer(
-        @RequestBody request: CreateCustomerRequestV1
+        @RequestBody @Valid request: CreateCustomerRequestV1
     ): ResponseEntity<CustomerResponseV1> {
         val customer = CustomerMapper.fromRequestToEntity(request)
         val createdCustomer = createCustomerUseCase.execute(customer)
@@ -38,7 +39,7 @@ class CustomerController(
     @PostMapping("/auth")
     @ResponseStatus(HttpStatus.OK)
     override fun authenticate(
-        @RequestBody
+        @RequestBody @Valid
         authRequest: AuthCustomerRequestV1
     ): ResponseEntity<CustomerResponseV1> {
         val customer = getCustomerByCpf.execute(
