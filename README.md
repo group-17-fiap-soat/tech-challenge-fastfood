@@ -85,7 +85,7 @@ Antes de aplicar os manifests do Kubernetes, é necessário construir as imagens
 Execute o script de configuração antes de iniciar o build:
 
 ```bash
-bash scripts/setup-infra.sh
+bash ./setup-infra.sh
 ```
 
 Caso prefira rodar os comandos manualmente:
@@ -102,7 +102,7 @@ docker build -t tech-challenge-fastfood:latest .
 Para usuários Windows, execute o script equivalente:
 
 ```powershell
-./scripts/setup-infra.psi
+./setup-infra.psi
 ```
 
 Ou execute manualmente:
