@@ -27,6 +27,12 @@ spring:
     baseline-on-migrate: true
 
 springdoc:
+  use-fqn: true
+  show-actuator: true
+  default-produces-media-type: application/json
+  default-consumes-media-type: application/json
+  remove-broken-reference-definitions: true
+  use-management-port: false
   swagger-ui:
     path: /swagger-ui
     operationsSorter: method
