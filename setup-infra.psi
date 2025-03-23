@@ -1,0 +1,53 @@
+# setup-fastfood.ps1
+$ErrorActionPreference = "Stop"
+
+function Install-Kubectl {
+    Write-Host "🔧 Instalando kubectl..."
+    $kubectlUrl = "https://dl.k8s.io/release/v1.29.0/bin/windows/amd64/kubectl.exe"
+    Invoke-WebRequest -Uri $kubectlUrl -OutFile "$PWD\kubectl.exe"
+    Move-Item "$PWD\kubectl.exe" "C:\Windows\System32\kubectl.exe" -Force
+    Write-Host "✅ kubectl instalado."
+}
+
+function Install-Minikube {
+    Write-Host "🔧 Instalando minikube..."
+    $minikubeUrl = "https://storage.googleapis.com/minikube/releases/latest/minikube-windows-amd64.exe"
+    Invoke-WebRequest -Uri $minikubeUrl -OutFile "$PWD\minikube.exe"
+    Move-Item "$PWD\minikube.exe" "C:\Windows\System32\minikube.exe" -Force
+    Write-Host "✅ minikube instalado."
+}
+
+# Verificar kubectl
+if (-not (Get-Command kubectl -ErrorAction SilentlyContinue)) {
+    Install-Kubectl
+} else {
+    Write-Host "✅ kubectl já está instalado."
+}
+
+# Verificar minikube
+if (-not (Get-Command minikube -ErrorAction SilentlyContinue)) {
+    Install-Minikube
+} else {
+    Write-Host "✅ minikube já está instalado."
+}
+
+# Iniciar o minikube
+Write-Host "`n🚀 Iniciando o Minikube..."
+minikube start
+
+# Configurar Docker dentro do Minikube
+Write-Host "`n🐳 Configurando ambiente Docker com Minikube..."
+Invoke-Expression -Command "$(minikube docker-env | Out-String)"
+
+# Fazer build das imagens
+Write-Host "`n🔨 Build das imagens Docker..."
+docker build -f infra/db/Dockerfile -t fastfood-postgres:latest .
+docker build -t tech-challenge-fastfood:latest .
+
+# Aplicar YAMLs do k8s
+Write-Host "`n📦 Aplicando manifests do Kubernetes (.\k8s\)..."
+kubectl apply -f .\k8s\
+
+# Abrir painel do Kubernetes
+Write-Host "`n📊 Abrindo o Dashboard do Kubernetes..."
+minikube dashboard
