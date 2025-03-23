@@ -76,17 +76,37 @@ Este projeto utiliza **Docker Compose** para configurar rapidamente o ambiente c
 
 ---
 
-## 🐳 Passo 1 – Build das imagens locais (Importante estar na raiz do projeto)
+## 🐳 Passo 1 – Build das Imagens Locais
 
-### 🔸 MacOS/Linux:
+Antes de aplicar os manifests do Kubernetes, é necessário construir as imagens Docker localmente e disponibilizá-las para o Minikube.
+
+### 🔹 MacOS/Linux
+
+Execute o script de configuração antes de iniciar o build:
+
 ```bash
-minikube start 
+bash scripts/setup-infra.sh
+```
+
+Caso prefira rodar os comandos manualmente:
+
+```bash
+minikube start
 eval $(minikube docker-env)
 docker build -f infra/db/Dockerfile -t fastfood-postgres:latest .
 docker build -t tech-challenge-fastfood:latest .
 ```
 
-### 🔸 Windows (PowerShell):
+### 🔹 Windows (PowerShell)
+
+Para usuários Windows, execute o script equivalente:
+
+```powershell
+./scripts/setup-infra.psi
+```
+
+Ou execute manualmente:
+
 ```powershell
 minikube start
 Invoke-Expression -Command "$(minikube docker-env | Out-String)"
@@ -94,9 +114,9 @@ docker build -f infra/db/Dockerfile -t fastfood-postgres:latest .
 docker build -t tech-challenge-fastfood:latest .
 ```
 
-> Certifique-se de estar na raiz do projeto ao rodar os builds.
+> **Importante:** Certifique-se de estar na raiz do projeto antes de rodar os comandos.
 
----
+
 
 ## 📦 Passo 2 – Aplicar os manifests Kubernetes
 
@@ -282,3 +302,7 @@ http://springboot.local.com/swagger-ui
 - **Variáveis de ambiente não reconhecidas?** Verifique se o `.env` está carregado corretamente ou se os ConfigMaps/Secrets estão aplicados.
 
 Agora você está pronto para codar, testar e gerenciar sua aplicação FastFood com estilo! 🚀🍔🍟
+
+## 📽️ Vídeo da Apresentação
+
+[![Assista ao vídeo](https://img.youtube.com/vi/Dht0kPP9SiA/hqdefault.jpg)](https://www.youtube.com/watch?v=Dht0kPP9SiA)  
