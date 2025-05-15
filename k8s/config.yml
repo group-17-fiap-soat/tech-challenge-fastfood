@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: fastfood
-          image: tech-challenge-fastfood:latest  # Local Docker image
-          imagePullPolicy: Never  # Use locally built image, don’t pull from a registry
+          image: 711772164085.dkr.ecr.us-east-1.amazonaws.com/tech-challenge-fastfood:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
@@ -81,7 +81,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: springboot.local.com
+    - host: fiap-soat-seventeen-fastfood-service.com
       http:
         paths:
           - path: /
