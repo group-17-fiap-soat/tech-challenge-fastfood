@@ -71,4 +71,10 @@ class CustomerController(
     }
 
 
+    @GetMapping("/test")
+     fun test(): ResponseEntity<String> {
+     return ResponseEntity.ok("Hello World")
+    }
+
+
 }
