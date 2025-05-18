@@ -10,5 +10,5 @@ data class ProductResponseV1(
     val description: String?,
     val price: BigDecimal,
     val category: CategoryEnum,
-    val imageUrl: String?
+    val imageUrl: String? = "teste de pipeline"
 )
