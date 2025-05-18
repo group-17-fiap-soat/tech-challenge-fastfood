@@ -3,7 +3,7 @@ name: Deploy to AWS EKS
 on:
   push:
     branches:
-      - main
+      - feature/pipeline
 
 env:
   AWS_REGION: us-east-1
