@@ -3,12 +3,14 @@ name: Deploy to AWS EKS
 on:
   push:
     branches:
-      - feature/pipeline
+      - main
 
 env:
   AWS_REGION: us-east-1
   ECR_REPOSITORY: tech-challenge-fastfood
-  IMAGE_TAG: latest
+  IMAGE_TAG: ${{ github.sha }}
+  CLUSTER_NAME: fastfood-app-eks
+  ECR_ACCOUNT: 361598269712
 
 jobs:
   deploy:
@@ -33,17 +35,19 @@ jobs:
         run: |
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
 
-      - name: Tag Docker image with full ECR URI
+      - name: Tag Docker image with both SHA and latest
         run: |
-          docker tag $ECR_REPOSITORY:$IMAGE_TAG 361598269712.dkr.ecr.us-east-1.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+          docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+          docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:latest
 
-      - name: Push Docker image to ECR
+      - name: Push both tags to ECR
         run: |
-          docker push 361598269712.dkr.ecr.us-east-1.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:latest
 
       - name: Update kubeconfig for EKS
         run: |
-          aws eks update-kubeconfig --region $AWS_REGION --name fastfood-app-eks
+          aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME
 
       - name: Deploy to EKS using kubectl
         run: |
