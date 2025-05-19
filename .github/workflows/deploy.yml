@@ -3,14 +3,15 @@ name: Deploy to AWS EKS
 on:
   push:
     branches:
-      - feature/pipeline
+      - main
+  workflow_dispatch:
 
 env:
   AWS_REGION: us-east-1
-  ECR_REPOSITORY: tech-challenge-fastfood
-  IMAGE_TAG: ${{ github.sha }}
-  CLUSTER_NAME: fastfood-app-eks
   ECR_ACCOUNT: 361598269712
+  ECR_REPOSITORY: tech-challenge-fastfood
+  CLUSTER_NAME: fastfood-app-eks
+  IMAGE_TAG: ${{ github.sha }}
 
 jobs:
   deploy:
@@ -31,7 +32,7 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build Docker image
+      - name: Build Docker image with commit SHA tag
         run: |
           docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
 
@@ -40,9 +41,14 @@ jobs:
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:latest
 
+      - name: Push Docker images to ECR
+        run: |
+          docker push $ECR_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:latest
+
       - name: Replace image tag in config.yml
         run: |
-          sed -i "s|tech-challenge-fastfood:latest|tech-challenge-fastfood:${{ github.sha }}|g" k8s/config.yml
+          sed -i "s|tech-challenge-fastfood:latest|tech-challenge-fastfood:$IMAGE_TAG|g" k8s/config.yml
 
       - name: Update kubeconfig for EKS
         run: |
