@@ -1,3 +1,4 @@
+# DEPLOYMENT
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -14,8 +15,8 @@ spec:
     spec:
       containers:
         - name: fastfood
-          image: tech-challenge-fastfood:latest  # Local Docker image
-          imagePullPolicy: Never  # Use locally built image, don’t pull from a registry
+          image: 361598269712.dkr.ecr.us-east-1.amazonaws.com/tech-challenge-fastfood:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
@@ -24,25 +25,21 @@ spec:
                 configMapKeyRef:
                   name: fastfood-config
                   key: DATABASE_HOST
-
             - name: DATABASE
               valueFrom:
                 configMapKeyRef:
                   name: fastfood-config
                   key: DATABASE
-
             - name: DATABASE_PORT
               valueFrom:
                 configMapKeyRef:
                   name: fastfood-config
                   key: DATABASE_PORT
-
             - name: DATABASE_USER
               valueFrom:
                 secretKeyRef:
                   name: fastfood-secret
                   key: DATABASE_USER
-
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -57,12 +54,14 @@ spec:
               cpu: "500m"
 
 ---
+
+# SERVICE
 apiVersion: v1
 kind: Service
 metadata:
   name: fastfood-service
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: fastfood-app
   ports:
@@ -72,16 +71,19 @@ spec:
       targetPort: 8080
 
 ---
+
+# INGRESS
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: fastfood-ingress
   annotations:
+    kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/use-forwarded-headers: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: springboot.local.com
+    - host: fiap-soat-seventeen-fastfood-service.com
       http:
         paths:
           - path: /
@@ -93,11 +95,12 @@ spec:
                   number: 80
 
 ---
+
+# HPA
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: fastfood-app
-  namespace: default
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -114,6 +117,8 @@ spec:
           averageUtilization: 50
 
 ---
+
+# METRICS SERVER
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -127,13 +132,11 @@ spec:
       k8s-app: metrics-server
   template:
     metadata:
-      name: metrics-server
       labels:
         k8s-app: metrics-server
     spec:
       serviceAccountName: metrics-server
       volumes:
-        # mount in tmp so we can safely use from-scratch images and/or read-only containers
         - name: tmp-dir
           emptyDir: {}
       hostNetwork: true
