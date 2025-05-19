@@ -40,10 +40,9 @@ jobs:
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
           docker tag $ECR_REPOSITORY:$IMAGE_TAG $ECR_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:latest
 
-      - name: Push both tags to ECR
+      - name: Replace image tag in config.yml
         run: |
-          docker push $ECR_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$IMAGE_TAG
-          docker push $ECR_ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:latest
+          sed -i "s|tech-challenge-fastfood:latest|tech-challenge-fastfood:${{ github.sha }}|g" k8s/config.yml
 
       - name: Update kubeconfig for EKS
         run: |
