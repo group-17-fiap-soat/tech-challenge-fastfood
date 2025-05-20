@@ -8,6 +8,7 @@ data class Customer(
     val cpf: String? = null,
     val name: String? = null,
     val email: String? = null,
+    val token: String? = null,
     var createdAt: OffsetDateTime? = null,
     var updatedAt: OffsetDateTime? = null
 )
