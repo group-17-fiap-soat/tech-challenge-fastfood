@@ -1,5 +1,6 @@
 package tech.challenge.fastfood.fastfood.adapters.controllers
 
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -24,9 +25,8 @@ class OrderController(
     private val changeOrderStatusUseCase: ChangeOrderStatusUseCase
 ) : OrderOperation {
 
-
     @GetMapping
-    override fun listOrders(): ResponseEntity<List<OrderResponseV1>> {
+    override fun listOrders(request: HttpServletRequest): ResponseEntity<List<OrderResponseV1>> {
         val orders = listOrderByIdUseCase.execute()
         val response = orders.map(OrderMapper::toOrderResponseV1)
         return ResponseEntity.status(HttpStatus.OK).body(response)

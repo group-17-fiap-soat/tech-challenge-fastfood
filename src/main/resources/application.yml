@@ -48,6 +48,5 @@ feign:
         connectTimeout: 5000
         readTimeout: 5000
         loggerLevel: full
-
 jwt:
-  secret: bnVnZ2V0c2RlYXJyb3o=
+  secret: MDE5NmZiOTMtMjRmNi03YWIzLWIzZGItMjI2ZWJhYTJhMDJl

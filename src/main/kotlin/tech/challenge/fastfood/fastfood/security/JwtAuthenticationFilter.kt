@@ -1,5 +1,6 @@
-package com.seuapp.security
+package tech.challenge.fastfood.fastfood.security
 
+import com.nimbusds.jwt.SignedJWT
 import com.seuapp.util.JwtTokenUtil
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -8,12 +9,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.OncePerRequestFilter
-import java.security.Key
 import java.security.interfaces.RSAPublicKey
 
 class JwtAuthenticationFilter(
     private val lambdaSecret: String,
-    private val cognitoPublicKey: RSAPublicKey,
 ) : OncePerRequestFilter() {
 
     override fun doFilterInternal(
@@ -25,8 +24,8 @@ class JwtAuthenticationFilter(
         val token = header?.removePrefix("Bearer ")?.trim()
 
         if (!token.isNullOrBlank()) {
-            val result = JwtTokenUtil.validateTokenAndResolveRole(
-                token, lambdaSecret, cognitoPublicKey
+            val result = JwtTokenUtil.validateToken(
+                token, lambdaSecret
             )
 
             if (result == null) {
@@ -35,7 +34,7 @@ class JwtAuthenticationFilter(
             }
 
             val (claims, role) = result
-            val authorities = listOf(SimpleGrantedAuthority(role))
+            val authorities = listOf(SimpleGrantedAuthority(role.name))
             val authentication = UsernamePasswordAuthenticationToken(claims.subject, null, authorities)
             SecurityContextHolder.getContext().authentication = authentication
             request.setAttribute("claims", claims)

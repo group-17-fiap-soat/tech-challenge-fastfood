@@ -5,29 +5,30 @@ import com.nimbusds.jose.crypto.MACVerifier
 import com.nimbusds.jose.crypto.RSASSAVerifier
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
+import tech.challenge.fastfood.fastfood.security.CognitoPublicKeyProvider
 import java.security.interfaces.RSAPublicKey
-import java.util.*
 
 object JwtTokenUtil {
 
-    fun validateTokenAndResolveRole(
+    enum class TokenRole { ADMIN, CLIENT }
+
+    fun validateToken(
         token: String,
         lambdaSecretBase64: String,
-        cognitoPublicKey: RSAPublicKey
-    ): Pair<JWTClaimsSet, String>? {
-        val claimsSet = parseToken(token) ?: return null
-        val issuer = claimsSet.issuer
+    ): Pair<JWTClaimsSet, TokenRole>? {
+        val signedJWT = parseToken(token) ?: return null
+        val issuer = signedJWT.jwtClaimsSet.issuer
 
         return when {
             issuer.contains("cognito-idp") -> {
-                if (verifyWithPublicKey(token, cognitoPublicKey)) {
-                    claimsSet to "ADMIN"
+                if (verifyWithPublicKey(signedJWT, CognitoPublicKeyProvider.getPublicKey(token))) {
+                    signedJWT.jwtClaimsSet to TokenRole.ADMIN
                 } else null
             }
 
             issuer == "auth.lambda" -> {
-                if (verifyWithSecret(token, lambdaSecretBase64)) {
-                    claimsSet to "CLIENT"
+                if (verifyWithSecret(signedJWT, lambdaSecretBase64)) {
+                    signedJWT.jwtClaimsSet to TokenRole.CLIENT
                 } else null
             }
 
@@ -35,29 +36,25 @@ object JwtTokenUtil {
         }
     }
 
-    private fun parseToken(token: String): JWTClaimsSet? {
+    private fun parseToken(token: String): SignedJWT? {
         return try {
-            val signedJWT = SignedJWT.parse(token)
-            signedJWT.jwtClaimsSet
+            SignedJWT.parse(token)
         } catch (e: Exception) {
             null
         }
     }
 
-    private fun verifyWithSecret(token: String, secretBase64: String): Boolean {
+    private fun verifyWithSecret(signedJWT: SignedJWT, base64Secret: String): Boolean {
         return try {
-            val key = Base64.getDecoder().decode(secretBase64)
-            val signedJWT = SignedJWT.parse(token)
-            val verifier: JWSVerifier = MACVerifier(key)
+            val verifier: JWSVerifier = MACVerifier(base64Secret)
             signedJWT.verify(verifier)
         } catch (e: Exception) {
             false
         }
     }
 
-    private fun verifyWithPublicKey(token: String, publicKey: RSAPublicKey): Boolean {
+    private fun verifyWithPublicKey(signedJWT: SignedJWT, publicKey: RSAPublicKey): Boolean {
         return try {
-            val signedJWT = SignedJWT.parse(token)
             val verifier: JWSVerifier = RSASSAVerifier(publicKey)
             signedJWT.verify(verifier)
         } catch (e: Exception) {

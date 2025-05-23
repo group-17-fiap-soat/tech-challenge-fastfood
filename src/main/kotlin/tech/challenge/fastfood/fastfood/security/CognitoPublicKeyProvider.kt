@@ -12,16 +12,19 @@ import java.util.Base64
 object CognitoPublicKeyProvider {
     private var cachedKey: RSAPublicKey? = null
 
-    fun getPublicKey(): RSAPublicKey {
+    fun getPublicKey(token: String): RSAPublicKey {
         if (cachedKey != null) return cachedKey!!
 
         val jwksUrl = URL("https://cognito-idp.us-east-1.amazonaws.com/us-east-1_DXHcffMXE/.well-known/jwks.json")
-
         val mapper = jacksonObjectMapper()
         val jwks: Map<String, List<Map<String, String>>> = mapper.readValue(jwksUrl)
 
-        val keyData = jwks["keys"]?.firstOrNull()
-            ?: throw IllegalStateException("Nenhuma chave pública encontrada no JWKS")
+
+        val jwtHeader = com.nimbusds.jwt.SignedJWT.parse(token).header
+        val kid = jwtHeader.keyID
+
+        val keyData = jwks["keys"]?.firstOrNull { it["kid"] == kid }
+            ?: throw IllegalStateException("Chave com kid $kid não encontrada no JWKS")
 
         val n = Base64.getUrlDecoder().decode(keyData["n"])
         val e = Base64.getUrlDecoder().decode(keyData["e"])

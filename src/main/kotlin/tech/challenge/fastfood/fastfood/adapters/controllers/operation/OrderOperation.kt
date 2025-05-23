@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import tech.challenge.fastfood.fastfood.common.dto.request.ChangeOrderStatusRequestV1
@@ -29,7 +30,7 @@ interface OrderOperation {
             content = [Content(mediaType = "application/json")]
         )]
     )
-    fun listOrders(): ResponseEntity<List<OrderResponseV1>>
+    fun listOrders(request: HttpServletRequest): ResponseEntity<List<OrderResponseV1>>
 
     @Operation(
         summary = "Busca um pedido pelo ID",
