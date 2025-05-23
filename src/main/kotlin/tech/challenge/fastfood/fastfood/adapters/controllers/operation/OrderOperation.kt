@@ -7,10 +7,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import tech.challenge.fastfood.fastfood.common.dto.request.ChangeOrderStatusRequestV1
 import tech.challenge.fastfood.fastfood.common.dto.request.CreateOrderRequestV1
 import tech.challenge.fastfood.fastfood.common.dto.response.OrderResponseV1
+import tech.challenge.fastfood.fastfood.entities.Customer
 import java.util.*
 
 interface OrderOperation {
@@ -69,6 +71,7 @@ interface OrderOperation {
         )]
     )
     fun createOrder(
+        @AuthenticationPrincipal customer: Customer?,
         @RequestBody request: CreateOrderRequestV1
     ): ResponseEntity<OrderResponseV1>
 

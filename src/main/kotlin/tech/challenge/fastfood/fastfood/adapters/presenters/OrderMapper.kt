@@ -9,7 +9,6 @@ object OrderMapper {
 
     fun requestToEntity(requestV1: CreateOrderRequestV1) =
         Order(
-            customerId = requestV1.customerId,
             orderItems = requestV1.orderItems.map(OrderItemMapper::fromRequestToEntity)
         )
 

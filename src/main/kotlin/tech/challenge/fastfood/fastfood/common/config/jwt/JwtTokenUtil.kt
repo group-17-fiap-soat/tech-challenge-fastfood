@@ -5,8 +5,11 @@ import com.nimbusds.jose.crypto.MACVerifier
 import com.nimbusds.jose.crypto.RSASSAVerifier
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
+import io.jsonwebtoken.Claims
 import tech.challenge.fastfood.fastfood.common.enums.TokenRoleEnum
+import tech.challenge.fastfood.fastfood.entities.Customer
 import java.security.interfaces.RSAPublicKey
+import java.util.UUID
 
 object JwtTokenUtil {
 
@@ -58,5 +61,15 @@ object JwtTokenUtil {
         } catch (e: Exception) {
             false
         }
+    }
+
+    fun claimsToCustomer(claims: JWTClaimsSet, token: String): Customer {
+        return Customer(
+            id = claims.subject?.let { UUID.fromString(it) },
+            cpf = claims.getStringClaim("cpf"),
+            name = claims.getStringClaim("name"),
+            email = claims.getStringClaim("email"),
+            token = token
+        )
     }
 }

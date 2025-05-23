@@ -10,7 +10,6 @@ import tech.challenge.fastfood.fastfood.entities.Customer
 @Component
 class AuthFeignGateway(
     private val authFeignGatewayInterface: AuthFeignGatewayInterface,
-    private val objectMapper: ObjectMapper
 ) {
 
     fun getCustomerByCpf(cpf: String): Customer {

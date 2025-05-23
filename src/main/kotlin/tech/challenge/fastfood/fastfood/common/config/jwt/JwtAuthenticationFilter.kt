@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.OncePerRequestFilter
+import tech.challenge.fastfood.fastfood.common.enums.TokenRoleEnum
 
 class JwtAuthenticationFilter(
     private val lambdaSecret: String,
@@ -32,7 +33,9 @@ class JwtAuthenticationFilter(
 
             val (claims, role) = result
             val authorities = listOf(SimpleGrantedAuthority("ROLE_${role.name}"))
-            val authentication = UsernamePasswordAuthenticationToken(claims.subject, null, authorities)
+            val customer = if( role == TokenRoleEnum.CUSTOMER)  JwtTokenUtil.claimsToCustomer(claims, token) else  claims.subject
+            val authentication = UsernamePasswordAuthenticationToken(customer, null, authorities)
+
             SecurityContextHolder.getContext().authentication = authentication
             request.setAttribute("claims", claims)
         }
