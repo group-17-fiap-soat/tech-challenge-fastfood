@@ -1,7 +1,8 @@
-package tech.challenge.fastfood.fastfood.security
+package tech.challenge.fastfood.fastfood.common.config.jwt
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.nimbusds.jwt.SignedJWT
 import java.math.BigInteger
 import java.net.URL
 import java.security.KeyFactory
@@ -20,7 +21,7 @@ object CognitoPublicKeyProvider {
         val jwks: Map<String, List<Map<String, String>>> = mapper.readValue(jwksUrl)
 
 
-        val jwtHeader = com.nimbusds.jwt.SignedJWT.parse(token).header
+        val jwtHeader = SignedJWT.parse(token).header
         val kid = jwtHeader.keyID
 
         val keyData = jwks["keys"]?.firstOrNull { it["kid"] == kid }

@@ -1,34 +1,32 @@
-package com.seuapp.util
+package tech.challenge.fastfood.fastfood.common.config.jwt
 
 import com.nimbusds.jose.JWSVerifier
 import com.nimbusds.jose.crypto.MACVerifier
 import com.nimbusds.jose.crypto.RSASSAVerifier
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
-import tech.challenge.fastfood.fastfood.security.CognitoPublicKeyProvider
+import tech.challenge.fastfood.fastfood.common.enums.TokenRoleEnum
 import java.security.interfaces.RSAPublicKey
 
 object JwtTokenUtil {
 
-    enum class TokenRole { ADMIN, CLIENT }
-
     fun validateToken(
         token: String,
         lambdaSecretBase64: String,
-    ): Pair<JWTClaimsSet, TokenRole>? {
+    ): Pair<JWTClaimsSet, TokenRoleEnum>? {
         val signedJWT = parseToken(token) ?: return null
         val issuer = signedJWT.jwtClaimsSet.issuer
 
         return when {
             issuer.contains("cognito-idp") -> {
                 if (verifyWithPublicKey(signedJWT, CognitoPublicKeyProvider.getPublicKey(token))) {
-                    signedJWT.jwtClaimsSet to TokenRole.ADMIN
+                    signedJWT.jwtClaimsSet to TokenRoleEnum.ADMIN
                 } else null
             }
 
             issuer == "auth.lambda" -> {
                 if (verifyWithSecret(signedJWT, lambdaSecretBase64)) {
-                    signedJWT.jwtClaimsSet to TokenRole.CLIENT
+                    signedJWT.jwtClaimsSet to TokenRoleEnum.CUSTOMER
                 } else null
             }
 

@@ -6,5 +6,6 @@ data class AuthFeignResponse(
     val id: UUID? = null,
     val email: String? = null,
     val name: String? = null,
+    val cpf: String? = null,
     val token: String? = null
 )
