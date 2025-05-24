@@ -311,4 +311,4 @@ Agora você está pronto para codar, testar e gerenciar sua aplicação FastFood
 
 ## 📽️ Vídeo da Apresentação
 
-[![Assista ao vídeo](https://img.youtube.com/vi/Dht0kPP9SiA/hqdefault.jpg)](https://www.youtube.com/watch?v=Dht0kPP9SiA)  
+[![Assista ao vídeo](https://img.youtube.com/vi/Dht0kPP9SiA/hqdefault.jpg)](https://www.youtube.com/watch?v=b7py2u_cs9I)  
