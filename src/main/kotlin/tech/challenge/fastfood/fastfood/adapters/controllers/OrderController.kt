@@ -1,14 +1,17 @@
 package tech.challenge.fastfood.fastfood.adapters.controllers
 
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*
 import tech.challenge.fastfood.fastfood.adapters.controllers.operation.OrderOperation
 import tech.challenge.fastfood.fastfood.adapters.presenters.OrderMapper
 import tech.challenge.fastfood.fastfood.common.dto.request.ChangeOrderStatusRequestV1
 import tech.challenge.fastfood.fastfood.common.dto.request.CreateOrderRequestV1
 import tech.challenge.fastfood.fastfood.common.dto.response.OrderResponseV1
+import tech.challenge.fastfood.fastfood.entities.Customer
 import tech.challenge.fastfood.fastfood.usecases.order.ChangeOrderStatusUseCase
 import tech.challenge.fastfood.fastfood.usecases.order.CreateOrderUseCase
 import tech.challenge.fastfood.fastfood.usecases.order.GetOrderByIdUseCase
@@ -24,9 +27,8 @@ class OrderController(
     private val changeOrderStatusUseCase: ChangeOrderStatusUseCase
 ) : OrderOperation {
 
-
     @GetMapping
-    override fun listOrders(): ResponseEntity<List<OrderResponseV1>> {
+    override fun listOrders(request: HttpServletRequest): ResponseEntity<List<OrderResponseV1>> {
         val orders = listOrderByIdUseCase.execute()
         val response = orders.map(OrderMapper::toOrderResponseV1)
         return ResponseEntity.status(HttpStatus.OK).body(response)
@@ -47,10 +49,13 @@ class OrderController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     override fun createOrder(
+        @AuthenticationPrincipal customer: Customer?,
         @RequestBody @Valid request: CreateOrderRequestV1
     ): ResponseEntity<OrderResponseV1> {
         val order = OrderMapper.requestToEntity(request)
-        val createdOrder = createOrderUseCase.execute(order)
+        val createdOrder = createOrderUseCase.execute(order.apply {
+            customerId = customer?.id
+        })
         val response = OrderMapper.toOrderResponseV1(createdOrder)
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }

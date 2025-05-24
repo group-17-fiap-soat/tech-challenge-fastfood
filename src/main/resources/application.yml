@@ -41,3 +41,12 @@ springdoc:
     version: openapi_3_1
 application-description: "FastFood é uma aplicação de gerenciamento de pedidos online para fast food, focada em rapidez e eficiência."
 application-version: "1.0.1"
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: full
+jwt:
+  secret: MDE5NmZiOTMtMjRmNi03YWIzLWIzZGItMjI2ZWJhYTJhMDJl

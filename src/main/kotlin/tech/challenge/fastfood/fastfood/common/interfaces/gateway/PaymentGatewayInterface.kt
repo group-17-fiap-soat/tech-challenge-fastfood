@@ -7,4 +7,5 @@ interface PaymentGatewayInterface {
     fun save(entity: PaymentData): PaymentData
     fun findByOrderId(id: UUID): PaymentData?
     fun findByExternalId(id: Long): PaymentData?
+    fun findById(id: UUID): PaymentData?
 }

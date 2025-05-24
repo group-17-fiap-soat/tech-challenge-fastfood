@@ -45,6 +45,11 @@ spec:
                 secretKeyRef:
                   name: fastfood-secret
                   key: DATABASE_PASSWORD
+            - name: AUTH_SERVICE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: fastfood-config
+                  key: AUTH_SERVICE_URL
           resources:
             requests:
               memory: "512Mi"
@@ -164,3 +169,4 @@ spec:
               mountPath: /tmp
       nodeSelector:
         kubernetes.io/os: linux
+

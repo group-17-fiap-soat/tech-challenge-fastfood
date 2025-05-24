@@ -1,16 +1,14 @@
 package tech.challenge.fastfood.fastfood.usecases.payment
 
-import com.mercadopago.client.payment.PaymentClient
-import jakarta.persistence.EntityNotFoundException
 import org.springframework.stereotype.Service
-import tech.challenge.fastfood.fastfood.common.interfaces.datasource.PaymentDataSource
-import java.util.UUID
+import tech.challenge.fastfood.fastfood.common.interfaces.gateway.PaymentGatewayInterface
+import java.util.*
 
 @Service
 class GetPaymentStatusUseCase(
-    val paymentDataSource: PaymentDataSource
+    val paymentGatewayInterface: PaymentGatewayInterface
 ) {
     fun execute(paymentId: UUID): String? {
-        return paymentDataSource.findById(paymentId).orElse(null).paymentStatus.status
+        return paymentGatewayInterface.findById(paymentId)?.paymentStatus?.status
     }
 }

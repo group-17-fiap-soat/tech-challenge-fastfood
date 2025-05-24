@@ -6,17 +6,17 @@ import java.time.OffsetDateTime
 import java.util.*
 
 data class Order(
-    val id: UUID? = null,
+    var id: UUID? = null,
     var orderNumber: Long? = null,
-    val customerId: UUID? = null,
-    val payment: PaymentAssociation? = null,
-    val status: OrderStatusEnum? = null,
-    val orderDate: OffsetDateTime? = null,
-    val finishedDate: OffsetDateTime? = null,
+    var customerId: UUID? = null,
+    var payment: PaymentAssociation? = null,
+    var status: OrderStatusEnum? = null,
+    var orderDate: OffsetDateTime? = null,
+    var finishedDate: OffsetDateTime? = null,
     var createdAt: OffsetDateTime? = null,
     var updatedAt: OffsetDateTime? = null,
-    val orderItems: List<OrderItem> = listOf()
-){
+    var orderItems: List<OrderItem> = listOf()
+) {
     val totalPrice: BigDecimal
         get() = calculateTotalPrice()
 
