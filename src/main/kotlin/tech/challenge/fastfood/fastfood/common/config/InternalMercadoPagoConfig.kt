@@ -11,8 +11,8 @@ class InternalMercadoPagoConfig {
 
     @PostConstruct
     fun initialize() {
-        val accessToken = System.getenv("MERCADO_PAGO_ACCESS_TOKEN")
-        MercadoPagoConfig.setAccessToken(accessToken)
+        val token = System.getenv("MERCADO_PAGO_ACCESS_TOKEN")
+        MercadoPagoConfig.setAccessToken(token)
     }
 
     @Bean
