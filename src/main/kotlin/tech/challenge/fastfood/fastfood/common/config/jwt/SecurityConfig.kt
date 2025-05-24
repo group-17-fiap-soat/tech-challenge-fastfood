@@ -35,10 +35,10 @@ class SecurityConfig {
                     .requestMatchers("/api/payments/**").permitAll()
                     .requestMatchers("/api/payments").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/products").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/orders").permitAll()
 
                     .requestMatchers(HttpMethod.GET, "/api/orders").hasAnyRole(customer, admin)
                     .requestMatchers(HttpMethod.GET, "/api/orders/*").hasAnyRole(customer, admin)
-                    .requestMatchers(HttpMethod.POST, "/api/orders").hasAnyRole(customer, admin)
 
                     .requestMatchers("/api/**").hasRole(admin)
 
