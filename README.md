@@ -4,17 +4,22 @@ Bem-vindo ao **FastFood Backend Service**! Esta API desenvolvida em Kotlin é re
 
 ### 1️⃣ Requisitos de Negócio
 
-<img src="./docs/1.png" width="50%"/>
+<img src="./docs/fase_2/1.png" width="50%"/>
 ---
 
 ### 2️⃣ Fluxo de Pedido no Sistema FastFood
 
-<img src="./docs/2.png" width="50%"/>
+<img src="docs/fase_3/2.png" width="50%"/>
 
 
-### 3️⃣ Arquitetura em Kubernetes (Minikube)
+### 3️⃣ Arquitetura AWS Cloud
 
-<img src="./docs/3.png" width="50%"/>
+<img src="docs/fase_3/3.png" width="50%"/>
+
+
+### 4️⃣ DER (Melhoria do Banco de Dados) - Diagrama
+
+<img src="docs/fase_3/4.png" width="50%"/>
 
 
 
@@ -24,13 +29,14 @@ Bem-vindo ao **FastFood Backend Service**! Esta API desenvolvida em Kotlin é re
 
 Este projeto utiliza **Docker Compose** para configurar rapidamente o ambiente com PostgreSQL. Abaixo estão as variáveis de ambiente necessárias para a conexão com o banco. Para começar, crie um arquivo `.env` com base no modelo `.env.sample`.
 
-| Variável                    | Descrição                                                  |
-|-----------------------------|------------------------------------------------------------|
+| Variável                    | Descrição                                                 |
+|-----------------------------|-----------------------------------------------------------|
 | `DATABASE`                  | Nome do banco de dados que será criado pelo Docker Compose |
-| `DATABASE_USER`             | Usuário para autenticação no PostgreSQL                    |
-| `DATABASE_PASSWORD`         | Senha do usuário do PostgreSQL                             |
-| `DATABASE_PORT`             | Porta para acesso ao PostgreSQL (padrão é `5432`)          |
-| `MERCADO_PAGO_ACCESS_TOKEN` | Token de acesso para a sdk do mercado pago                 |
+| `DATABASE_USER`             | Usuário para autenticação no PostgreSQL                   |
+| `DATABASE_PASSWORD`         | Senha do usuário do PostgreSQL                            |
+| `DATABASE_PORT`             | Porta para acesso ao PostgreSQL (padrão é `5432`)         |
+| `MERCADO_PAGO_ACCESS_TOKEN` | Token de acesso para a sdk do mercado pago                |
+| `AUHT_SERVICE_URL`          | URL do Lambda de autenticação de usuário                  |
 
 ---
 
