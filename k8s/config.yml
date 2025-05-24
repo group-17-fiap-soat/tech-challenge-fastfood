@@ -50,6 +50,11 @@ spec:
                 configMapKeyRef:
                   name: fastfood-config
                   key: AUTH_SERVICE_URL
+            - name: MERCADO_PAGO_ACCESS_TOKEN
+              valueFrom:
+                configMapKeyRef:
+                  name: fastfood-config
+                  key: MERCADO_PAGO_ACCESS_TOKEN
           resources:
             requests:
               memory: "512Mi"

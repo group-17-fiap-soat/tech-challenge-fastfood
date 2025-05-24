@@ -32,12 +32,14 @@ class SecurityConfig {
                     .requestMatchers("/health-check").permitAll()
                     .requestMatchers("/api/customers/**").permitAll()
                     .requestMatchers("/api/customers/auth").permitAll()
+                    .requestMatchers("/api/payments/**").permitAll()
+                    .requestMatchers("/api/payments").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/products").permitAll()
 
-                    .requestMatchers(HttpMethod.GET, "/api/products").hasAnyRole(customer, admin)
                     .requestMatchers(HttpMethod.GET, "/api/orders").hasAnyRole(customer, admin)
                     .requestMatchers(HttpMethod.GET, "/api/orders/*").hasAnyRole(customer, admin)
                     .requestMatchers(HttpMethod.POST, "/api/orders").hasAnyRole(customer, admin)
-                    .requestMatchers("/api/payments/**").hasAnyRole(customer, admin)
+
                     .requestMatchers("/api/**").hasRole(admin)
 
                     .anyRequest().authenticated()
